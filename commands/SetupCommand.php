@@ -203,7 +203,7 @@ class SetupCommand extends Command
 
 
 
-         // Now create the Router.php file
+        // Now create the Router.php file
         $addonName = $input->getArgument('addonName');
 
         // Get the current working directory
@@ -267,41 +267,47 @@ class SetupCommand extends Command
 
 
 
-        $adminControllersDir = $currentDir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Controllers';
-
         // Ensure the directory exists, create it if necessary
-        if (!is_dir($adminControllersDir)) {
-            if (!mkdir($adminControllersDir, 0777, true)) {
-                $output->writeln("<error>Failed to create adminController directory. Please check permissions.</error>");
+        $BaseControllersDir = $currentDir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Controllers';
+
+        if (!is_dir($BaseControllersDir)) {
+            if (!mkdir($BaseControllersDir, 0777, true)) {
+                $output->writeln("<error>Failed to create BaseController directory. Please check permissions.</error>");
                 return Command::FAILURE;
             }
-            $output->writeln("<info>Created adminController directory: $adminControllersDir</info>");
+            $output->writeln("<info>Created BaseController directory: $BaseControllersDir</info>");
         }
 
         // Path to the stub file
-        $adminControllerStub = __DIR__ . '/basecontroller.stub';
+        $BaseControllerStub = __DIR__ . '/basecontroller.stub';
 
-        if (!file_exists($adminControllerStub)) {
-            $output->writeln("<error>Stub file not found at: $adminControllerStub</error>");
+        if (!file_exists($BaseControllerStub)) {
+            $output->writeln("<error>Stub file not found at: $BaseControllerStub</error>");
             return Command::FAILURE;
         }
 
         // Read the stub content
-        $adminControllerFileContent = file_get_contents($adminControllerStub);
+        $BaseControllerFileContent = file_get_contents($BaseControllerStub);
 
         // Replace the placeholder $addonName with the actual addon name
-        $adminControllerFileContent = str_replace('$addonName', $addonName, $adminControllerFileContent);
+        $BaseControllerFileContent = str_replace('$addonName', $addonName, $BaseControllerFileContent);
 
-        // Set the path to the AdminController.php file
-        $adminControllerFilePath = $adminControllersDir . DIRECTORY_SEPARATOR . 'BaseController.php';
+        // Debug the final content of the BaseController file
+        $output->writeln("<info>BaseController file content:\n$BaseControllerFileContent</info>");
 
-        // Create the AdminController.php file
-        if (file_put_contents($adminControllerFilePath, $adminControllerFileContent)) {
-            $output->writeln("<info>Created AdminController file: $adminControllerFilePath</info>");
-        } else {
-            $output->writeln("<error>Failed to create $adminControllerFilePath. Please check permissions.</error>");
+        // Set the path to the BaseController.php file
+        $BaseControllerFilePath = $BaseControllersDir . DIRECTORY_SEPARATOR . 'BaseController.php';
+
+        // Check and create the file
+        $writeResult = file_put_contents($BaseControllerFilePath, $BaseControllerFileContent);
+
+        if ($writeResult === false) {
+            $output->writeln("<error>Failed to create $BaseControllerFilePath. Please check permissions.</error>");
             return Command::FAILURE;
+        } else {
+            $output->writeln("<info>Created BaseController file: $BaseControllerFilePath</info>");
         }
+
 
 
         return Command::SUCCESS;
