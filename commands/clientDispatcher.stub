@@ -17,7 +17,7 @@ class ClientDispatcher
      *
      * @return string
      */
-    public function dispatch(string $controllerName, string $action, array $parameters = [],$$addonName=null)
+    public function dispatch(string $controllerName, string $action, array $parameters = [],$module)
     {
        // Handle logic here 
     }
