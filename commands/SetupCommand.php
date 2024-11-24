@@ -182,7 +182,7 @@ class SetupCommand extends Command
 
 
 
-        
+
         // Read the stub content
         $clientDispatcherFileContent = file_get_contents($clientDispatcherStub);
 
@@ -236,7 +236,7 @@ class SetupCommand extends Command
         $routerContent = str_replace('$addonName', $addonName, $routerContent);
 
         // Set the path to the AdminDispatcher.php file
-        $routerFilePath = $routersatcherDir . DIRECTORY_SEPARATOR . 'Router.php';
+        $routerFilePath = $routersatcherDir . DIRECTORY_SEPARATOR . 'web.php';
 
         // Create the AdminDispatcher.php file
         if (file_put_contents($routerFilePath, $routerContent)) {
