@@ -17,7 +17,7 @@ class AdminDispatcher
      *
      * @return string
      */
-    public function dispatch(string $controllerName, string $action, array $parameters = [],'$'.$addonName=null)
+    public function dispatch(string $controllerName, string $action, array $parameters = [],$$addonName=null)
     {
        // Handle logic here 
     }
