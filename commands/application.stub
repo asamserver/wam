@@ -14,11 +14,11 @@ class Application
     public static function config(): array
     {
         return [
-            'name' => '$addonName',
+            'name' => getenv('MODULE') ?? '$addonName',
             'description' => 'Description for $addonName',
-            'author' => 'YourCompany',
-            'version' => '1.0.0',
-            'enabled' => true,  // Set to false to disable the module
+            'author' => getenv('AUTHOR') ?? 'Your Name',
+            'version' => getenv('VERSION') ?? '1.0.0',
+            'enabled' => getenv('APP_ENABLE') ?? true,
         ];
     }
 
