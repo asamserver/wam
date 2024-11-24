@@ -1,0 +1,15 @@
+<?php
+
+namespace WHMCS\Module\Addon\{{addonName}}\src\Controllers;
+
+class BaseController
+{
+    // Common methods for controllers can be placed here, for example:
+    
+    protected function renderView($view, $data = [])
+    {
+        // Render logic (e.g., return HTML views, templates)
+    }
+
+    // Add more shared methods for handling responses, data, etc.
+}
