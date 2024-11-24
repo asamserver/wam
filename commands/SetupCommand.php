@@ -262,47 +262,55 @@ class SetupCommand extends Command
 
 
 
+        $addonName = $input->getArgument('addonName');
 
+        // Get the current working directory
+        $currentDir = getcwd();
 
-
-
-
-        $adminControllersDir = $currentDir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Controllers';
+        // Set the directory where the AdminDispatcher.php file will be created
+        $routersatcherDir = $currentDir . DIRECTORY_SEPARATOR . 'Controllers';
 
         // Ensure the directory exists, create it if necessary
-        if (!is_dir($adminControllersDir)) {
-            if (!mkdir($adminControllersDir, 0777, true)) {
-                $output->writeln("<error>Failed to create adminController directory. Please check permissions.</error>");
+        if (!is_dir($routersatcherDir)) {
+            if (!mkdir($routersatcherDir, 0777, true)) {
+                $output->writeln("<error>Failed to create adminDispatcher directory. Please check permissions.</error>");
                 return Command::FAILURE;
             }
-            $output->writeln("<info>Created adminController directory: $adminControllersDir</info>");
+            $output->writeln("<info>Created adminDispatcher directory: $routersatcherDir</info>");
         }
 
         // Path to the stub file
-        $adminControllerStub = __DIR__ . '/basecontroller.stub';
+        $RouterStub = __DIR__ . '/basecontroller.stub';
 
-        if (!file_exists($adminControllerStub)) {
-            $output->writeln("<error>Stub file not found at: $adminControllerStub</error>");
+        if (!file_exists($RouterStub)) {
+            $output->writeln("<error>Stub file not found at: $RouterStub</error>");
             return Command::FAILURE;
         }
 
         // Read the stub content
-        $adminControllerFileContent = file_get_contents($adminControllerStub);
+        $routerContent = file_get_contents($RouterStub);
 
         // Replace the placeholder $addonName with the actual addon name
-        $adminControllerFileContent = str_replace('$addonName', $addonName, $adminControllerFileContent);
+        $routerContent = str_replace('$addonName', $addonName, $routerContent);
 
-        // Set the path to the AdminController.php file
-        $adminControllerFilePath = $adminControllersDir . DIRECTORY_SEPARATOR . 'Controller.php';
+        // Set the path to the AdminDispatcher.php file
+        $routerFilePath = $routersatcherDir . DIRECTORY_SEPARATOR . 'Controller.php';
 
-        // Create the AdminController.php file
-        if (file_put_contents($adminControllerFilePath, $adminControllerFileContent)) {
-            $output->writeln("<info>Created AdminController file: $adminControllerFilePath</info>");
+        // Create the AdminDispatcher.php file
+        if (file_put_contents($routerFilePath, $routerContent)) {
+            $output->writeln("<info>Created Router file: $routerFilePath</info>");
         } else {
-            $output->writeln("<error>Failed to create $adminControllerFilePath. Please check permissions.</error>");
+            $output->writeln("<error>Failed to create $routerFilePath. Please check permissions.</error>");
             return Command::FAILURE;
         }
 
+
+
+
+
+
+
+        
 
 
 
