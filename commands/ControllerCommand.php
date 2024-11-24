@@ -54,7 +54,7 @@ class ControllerCommand extends Command
         $output->writeln("<info>Controller path: $controllerPath</info>");
 
         // Load and modify the stub
-        $stub = file_get_contents(__DIR__ . '/controller.stub');
+        $stub = file_get_contents(__DIR__ . '/stubs/controller.stub');
         $addonName  = basename(getcwd());
 
         // Replace placeholders in the stub

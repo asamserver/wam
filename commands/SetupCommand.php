@@ -59,7 +59,7 @@ class SetupCommand extends Command
         $addonFilePath = $currentDir . DIRECTORY_SEPARATOR . $addonName . '.php';
 
         // Path to the stub file (template)
-        $stubFile = __DIR__ . '/addon.stub';
+        $stubFile = __DIR__ . '/stubs/addon.stub';
         if (!file_exists($stubFile)) {
             $output->writeln("<error>Stub file not found at: $stubFile</error>");
             return Command::FAILURE;
@@ -79,7 +79,7 @@ class SetupCommand extends Command
 
         // Now create the Application.php file
         $applicationFilePath = $appDir . DIRECTORY_SEPARATOR . 'Application.php';
-        $applicationStub = __DIR__ . '/application.stub';
+        $applicationStub = __DIR__ . '/stubs/application.stub';
 
         if (!file_exists($applicationStub)) {
             $output->writeln("<error>Stub file not found at: $applicationStub</error>");
@@ -108,7 +108,7 @@ class SetupCommand extends Command
         }
 
         $helperFilePath = $helperDir . DIRECTORY_SEPARATOR . 'Helper.php';
-        $helperStub = __DIR__ . '/helper.stub';
+        $helperStub = __DIR__ . '/stubs/helper.stub';
 
         if (!file_exists($helperStub)) {
             $output->writeln("<error>Stub file not found at: $helperStub</error>");
@@ -146,7 +146,7 @@ class SetupCommand extends Command
         }
 
         // Path to the stub file
-        $adminDispatcherStub = __DIR__ . '/adminDispatcher.stub';
+        $adminDispatcherStub = __DIR__ . '/stubs/adminDispatcher.stub';
 
         if (!file_exists($adminDispatcherStub)) {
             $output->writeln("<error>Stub file not found at: $adminDispatcherStub</error>");
@@ -173,7 +173,7 @@ class SetupCommand extends Command
 
         // Creat Client Dispatcher 
 
-        $clientDispatcherStub = __DIR__ . '/clientDispatcher.stub';
+        $clientDispatcherStub = __DIR__ . '/stubs/clientDispatcher.stub';
 
         if (!file_exists($clientDispatcherStub)) {
             $output->writeln("<error>Stub file not found at: $clientDispatcherStub</error>");
@@ -222,7 +222,7 @@ class SetupCommand extends Command
         }
 
         // Path to the stub file
-        $RouterStub = __DIR__ . '/router.stub';
+        $RouterStub = __DIR__ . '/stubs/router.stub';
 
         if (!file_exists($RouterStub)) {
             $output->writeln("<error>Stub file not found at: $RouterStub</error>");
@@ -279,7 +279,7 @@ class SetupCommand extends Command
         }
 
         // Path to the stub file
-        $BaseControllerStub = __DIR__ . '/basecontroller.stub';
+        $BaseControllerStub = __DIR__ . '/stubs/basecontroller.stub';
 
         if (!file_exists($BaseControllerStub)) {
             $output->writeln("<error>Stub file not found at: $BaseControllerStub</error>");

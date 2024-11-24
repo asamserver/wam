@@ -42,7 +42,7 @@ class ModelCommand extends Command
         $modelFilePath = $modelDir . DIRECTORY_SEPARATOR . $modelName . '.php';
 
         // Load and process the stub file
-        $stubPath = __DIR__ . '/model.stub';  // Path to the stub file
+        $stubPath = __DIR__ . '/stubs/model.stub';  // Path to the stub file
         if (!file_exists($stubPath)) {
             $output->writeln("<error>Model stub file not found: $stubPath</error>");
             return Command::FAILURE;

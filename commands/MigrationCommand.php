@@ -43,7 +43,7 @@ class MigrationCommand extends Command
         $migrationFilePath = $databaseDir . DIRECTORY_SEPARATOR . $timestamp . '_' . $migrationFileName;
 
         // Load the stub file from the current directory
-        $stubPath = __DIR__ . '/migration.stub';
+        $stubPath = __DIR__ . '/stubs/migration.stub';
         if (!file_exists($stubPath)) {
             $output->writeln("<error>Migration stub file not found at: $stubPath</error>");
             return Command::FAILURE;
