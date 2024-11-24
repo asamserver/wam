@@ -47,9 +47,12 @@ class ControllerCommand extends Command
         );
 
         // Write the controller to the appropriate file
-        file_put_contents($controllerPath, $stub);
-        $output->writeln("<info>Controller created successfully: {$controllerPath}</info>");
-
+        if (file_put_contents($controllerPath, $stub)) {
+            $output->writeln("<info>Created model: $controllerPath</info>");
+        } else {
+            $output->writeln("<error>Failed to create model file. Please check permissions.</error>");
+            return Command::FAILURE;
+        }
         return Command::SUCCESS;
     }
 }
