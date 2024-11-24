@@ -291,10 +291,6 @@ class SetupCommand extends Command
 
         // Replace the placeholder $addonName with the actual addon name
         $BaseControllerFileContent = str_replace('$addonName', $addonName, $BaseControllerFileContent);
-
-        // Debug the final content of the BaseController file
-        $output->writeln("<info>BaseController file content:\n$BaseControllerFileContent</info>");
-
         // Set the path to the BaseController.php file
         $BaseControllerFilePath = $BaseControllersDir . DIRECTORY_SEPARATOR . 'BaseController.php';
 

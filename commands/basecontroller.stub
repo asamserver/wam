@@ -4,12 +4,85 @@ namespace WHMCS\Module\Addon\$addonName\src\Controllers;
 
 class BaseController
 {
-    // Common methods for controllers can be placed here, for example:
-    
+    /**
+     * Render an HTML view
+     * 
+     * @param string $view The view file name (without the `.php` extension)
+     * @param array $data Data to pass to the view
+     * @return string The rendered view
+     */
     protected function renderView($view, $data = [])
     {
-        // Render logic (e.g., return HTML views, templates)
+        // Path to the view file
+        $viewPath = __DIR__ . "/../../../resource/views/admin/{$view}.php";
+        $viewContent = '';
+
+        if (file_exists($viewPath)) {
+            // Extract data to variables
+            extract($data);
+
+            // Start output buffering
+            ob_start();
+
+            // Include the view file
+            include $viewPath;
+
+            // Capture the output and store it in $viewContent
+            $viewContent = ob_get_clean();
+        }
+
+        return $viewContent;
     }
 
-    // Add more shared methods for handling responses, data, etc.
+    /**
+     * Render JavaScript content by including a JavaScript file
+     * 
+     * @param string $script The name of the JavaScript file (without .js extension)
+     * @param array $data Data to inject into the JavaScript file
+     * @return string The rendered JavaScript content
+     */
+    protected function renderJs($script, $data = [])
+    {
+        // Path to the JS file
+        $jsFile = __DIR__ . "/../../../resource/js/{$script}.js";
+
+        if (file_exists($jsFile)) {
+            $content = file_get_contents($jsFile);
+
+            // Replace placeholders with dynamic data
+            foreach ($data as $key => $value) {
+                $content = str_replace("{{{$key}}}", $value, $content);
+            }
+
+            return $content;
+        } else {
+            throw new \Exception("JS file not found: {$jsFile}");
+        }
+    }
+
+    /**
+     * Render CSS content by including a CSS file
+     * 
+     * @param string $style The name of the CSS file (without .css extension)
+     * @param array $data Data to inject into the CSS file
+     * @return string The rendered CSS content
+     */
+    protected function renderCss($style, $data = [])
+    {
+        // Path to the CSS file
+        $cssFile = __DIR__ . "/../../../resource/css/{$style}.css";
+
+        if (file_exists($cssFile)) {
+            $content = file_get_contents($cssFile);
+
+            // Replace placeholders with dynamic data
+            foreach ($data as $key => $value) {
+                $content = str_replace("{{{$key}}}", $value, $content);
+            }
+
+            return $content;
+        } else {
+            throw new \Exception("CSS file not found: {$cssFile}");
+        }
+    }
 }
