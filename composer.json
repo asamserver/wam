@@ -1,5 +1,5 @@
 {
-    "name": "miladyousefi/whmcs",
+    "name": "asamserver/wam",
     "description": "Framework for creating WHMCS addon modules.",
     "type": "project",
     "keywords": ["whmcs", "addon", "framework"],
@@ -34,7 +34,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/miladyousefi/whmcs"
+            "url": "https://github.com/asamserver/wam"
         }
     ],
     "minimum-stability": "dev",
