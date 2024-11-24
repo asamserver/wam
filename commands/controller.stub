@@ -1,6 +1,6 @@
 <?php
 
-namespace WHMCS\Module\Addon\{{addonName}}\src\Controllers\{{type}};
+namespace WHMCS\Module\Addon\{{addonName}}\src\Controllers\{{name}};
 
 use WHMCS\Module\Addon\{{addonName}}\src\Controllers\BaseController;
 
@@ -14,7 +14,7 @@ class {{name}} extends BaseController
     public function index()
     {
         // Default action (index) for this controller
-        echo "Welcome to the {{name}} Controller ({{type}}).";
+        echo "Welcome to the {{name}} ";
     }
 
     // You can add more actions or methods here for handling specific routes

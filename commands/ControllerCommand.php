@@ -25,8 +25,7 @@ class ControllerCommand extends Command
         
         // Extract the controller type from the directory structure, e.g., 'admin' or 'client'
         $currentDir = getcwd();
-        $type = 'admin'; // Default to admin if no directory exists
-        $controllerDir = $currentDir . '/src/Controllers/' . ucfirst($type); // Default directory for 'admin'
+        $controllerDir = $currentDir . '/src/Controllers'; // Default directory for 'admin'
 
         // Ensure the target controller directory exists (Create nested directories)
         if (!is_dir($controllerDir)) {
@@ -34,7 +33,7 @@ class ControllerCommand extends Command
         }
 
         // Controller filename and path
-        $controllerName = ucfirst($name) . 'Controller';
+        $controllerName = ucfirst($name);
         $controllerPath = $controllerDir . '/' . $controllerName . '.php';
         
         // Load and modify the stub
@@ -42,8 +41,8 @@ class ControllerCommand extends Command
         
         // Replace placeholders in the stub
         $stub = str_replace(
-            ['{{name}}', '{{type}}'],
-            [$controllerName, ucfirst($type)],
+            ['{{name}}'],
+            [$controllerName],
             $stub
         );
 
