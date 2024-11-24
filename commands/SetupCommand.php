@@ -293,7 +293,7 @@ class SetupCommand extends Command
         $adminControllerFileContent = str_replace('$addonName', $addonName, $adminControllerFileContent);
 
         // Set the path to the AdminController.php file
-        $adminControllerFilePath = $adminControllersDir . DIRECTORY_SEPARATOR . 'Controller.php';
+        $adminControllerFilePath = $adminControllersDir . DIRECTORY_SEPARATOR . 'BaseController.php';
 
         // Create the AdminController.php file
         if (file_put_contents($adminControllerFilePath, $adminControllerFileContent)) {
@@ -302,11 +302,6 @@ class SetupCommand extends Command
             $output->writeln("<error>Failed to create $adminControllerFilePath. Please check permissions.</error>");
             return Command::FAILURE;
         }
-
-
-
-
-
 
 
         return Command::SUCCESS;
