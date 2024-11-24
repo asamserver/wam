@@ -1,0 +1,141 @@
+<?php
+
+if (!defined('WHMCS')) {
+    die('This file cannot be accessed directly!');
+}
+
+use WHMCS\Database\Capsule;
+
+/**
+ * Render Admin View
+ *
+ * @param string $path
+ * @param array $data
+ * @return string
+ */
+if (!function_exists('${addonName}_renderAdminView')) {
+    function ${addonName}_renderAdminView(string $path, array $data = []): string
+    {
+        $path = __DIR__ . '/../View/admin/' . $path . '.php';
+        $view = '';
+        if (file_exists($path)) {
+            extract($data);
+
+            ob_start();
+
+            include $path;
+
+            $view = ob_get_clean();
+        }
+
+        return $view;
+    }
+}
+
+/**
+ * Render JS Script Files
+ *
+ * @param string $path
+ * @param string $type
+ * @return string
+ */
+if (!function_exists('${addonName}_renderJS')) {
+    function ${addonName}_renderJS(string $path, string $type = 'local'): string
+    {
+        if ($type == 'cdn'){
+            return '<script src="' . $path . '"></script>';
+        }
+
+        $whmcsDirUrlSetting = ${addonName}_getSetting('whmcs_dir_url', 'env');
+        if (!empty($whmcsDirUrlSetting)){
+            $path = $whmcsDirUrlSetting .'/modules/addons/${addonName}/assets/js/' . $path;
+        } else {
+            $path = '/modules/addons/${addonName}/assets/js/' . $path;
+        }
+
+        $generateRandomNumber = ${addonName}_generateRandomNumber();
+
+        return '<script type="text/javascript" src="' . $path .'?v='.$generateRandomNumber. '"></script>';
+    }
+}
+
+/**
+ * Render CSS Script Files
+ *
+ * @param string $path
+ * @param string $type
+ * @return string
+ */
+if (!function_exists('${addonName}_renderCSS')) {
+    function ${addonName}_renderCSS(string $path, string $type = 'local'): string
+    {
+        if ($type == 'cdn'){
+            return '<link rel="stylesheet" href="' . $path . '">';
+        }
+
+        $whmcsDirUrlSetting = ${addonName}_getSetting('whmcs_dir_url', 'env');
+        if (!empty($whmcsDirUrlSetting)){
+            $path = $whmcsDirUrlSetting .'/modules/addons/${addonName}/assets/css/' . $path;
+        } else {
+            $path = '/modules/addons/${addonName}/assets/css/' . $path;
+        }
+
+        $generateRandomNumber = ${addonName}_generateRandomNumber();
+
+        return '<link rel="stylesheet" type="text/css" href="' . $path .'?v='.$generateRandomNumber. '">';
+    }
+}
+
+/**
+ * Generate Random Number
+ *
+ * @return int
+ */
+if (!function_exists('${addonName}_generateRandomNumber')) {
+    function ${addonName}_generateRandomNumber(): int
+    {
+        // Get the current time in microseconds
+        $microtime = microtime(true);
+
+        // Use the microtime to seed the random number generator
+        mt_srand($microtime);
+
+        // Generate a random number
+        $randomNumber = mt_rand();
+
+        return $randomNumber;
+    }
+}
+
+/**
+ * Get Client ID by User ID
+ *
+ * @param int|null $userId
+ * @return mixed
+ */
+if (!function_exists('${addonName}_getClientId')) {
+    function ${addonName}_getClientId($userId = null)
+    {
+        if ($_SESSION['uid']){
+            return $_SESSION['uid'];
+        }
+        $userId = $userId ?? json_decode($_SESSION['login_auth_tk'], true)['id'];
+
+        return Capsule::table('tblusers_clients')->where('auth_user_id', $userId)->first()->client_id;
+    }
+}
+
+/**
+ * Get Controller Class
+ *
+ * @param string $controllerName
+ * @return string
+ */
+if (!function_exists('${addonName}_getControllerClass')) {
+    function ${addonName}_getControllerClass(string $controllerName): string
+    {
+        // Return the fully qualified class name
+        return "WHMCS\\Module\\Addon\\${addonName}\\Controllers\\Admin\\" . ucfirst($controllerName) . "Controller";
+    }
+}
+

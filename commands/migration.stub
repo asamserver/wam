@@ -1,0 +1,21 @@
+<?php
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
+
+class Create{{tableName}}Table extends Migration
+{
+    public function up()
+    {
+        Schema::create('{{tableName}}', function (Blueprint $table) {
+            $table->increments('id');
+            $table->timestamps();
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('{{tableName}}');
+    }
+}

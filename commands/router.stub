@@ -1,0 +1,44 @@
+<?php
+
+namespace WHMCS\Module\Addon\$addonName\src;
+
+use WHMCS\Module\Addon\$addonName\src\Dispatcher\AdminDispatcher;
+
+class Router
+{
+    protected $routes = [];
+
+    /**
+     * Register a route
+     *
+     * @param string $route
+     * @param array $controllerAction
+     */
+    public function addRoute(string $route, array $controllerAction)
+    {
+        $this->routes[$route] = $controllerAction;
+    }
+
+    /**
+     * Dispatch a route
+     *
+     * @param string $route
+     */
+    public function dispatch(string $route)
+    {
+        if (isset($this->routes[$route])) {
+            list($controllerName, $actionName) = $this->routes[$route];
+
+            // Instantiate the controller and call the action method
+            $controller = new $controllerName();
+            if (method_exists($controller, $actionName)) {
+                $response = $controller->$actionName();
+                echo $response;
+            } else {
+                echo "Action $actionName not found in controller $controllerName.";
+            }
+        } else {
+            echo "Route $route not found.";
+        }
+    }
+}

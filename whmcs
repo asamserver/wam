@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+require __DIR__ . '/vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use Dotenv\Dotenv;
+
+// Load commands
+require_once __DIR__ . '/commands/SetupCommand.php';
+require_once __DIR__ . '/commands/MigrationCommand.php';
+require_once __DIR__ . '/commands/ModelCommand.php';
+require_once __DIR__ . '/commands/MakeEnvCommand.php';
+
+
+$app = new Application('WHMCS Addon Framework', '1.0.0');
+$app->add(new MakeEnvCommand()); 
+$app->add(new SetupCommand());
+$app->add(new MigrationCommand());
+$app->add(new ModelCommand()); 
+$app->run();
+
+
+
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();

@@ -1,0 +1,25 @@
+<?php
+
+namespace WHMCS\Module\Addon\$addonName\src\Dispatcher;
+
+if (!defined('WHMCS')) {
+    die('This file cannot be accessed directly!');
+}
+
+class ClientDispatcher
+{
+    /**
+     * Dispatch request.
+     *
+     * @param string $controllerName
+     * @param string $action
+     * @param array $parameters
+     *
+     * @return string
+     */
+    public function dispatch(string $controllerName, string $action, array $parameters = [],$addonName=null)
+    {
+       // Handle logic here 
+    }
+}
+

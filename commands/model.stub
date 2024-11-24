@@ -1,0 +1,12 @@
+<?php
+
+namespace WHMCS\Module\Addon\{{addonName}}\src\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class {{modelName}} extends Model
+{
+    protected $table = '{{tableName}}'; // Table name
+
+    protected $fillable = []; // Add your fillable fields here
+}
