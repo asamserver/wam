@@ -17,7 +17,7 @@ class AdminDispatcher
      *
      * @return string
      */
-    public function dispatch(string $controllerName, string $action, array $parameters = [],$module)
+    public function dispatch(string $controllerName, string $action, array $parameters = [])
     {
        // Handle logic here 
     }

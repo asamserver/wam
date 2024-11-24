@@ -53,7 +53,7 @@ function $addonName_output($vars)
     
     $action = $_REQUEST['action'] ?? 'index';
 
-    $response = (new AdminDispatcher)->dispatch($controller, $action, $vars,$module);
+    $response = (new AdminDispatcher)->dispatch($controller, $action, $vars);
 
     echo $response;
 }
@@ -65,6 +65,6 @@ function $addonName_clientarea($vars): string
     
     $action = $_REQUEST['action'] ?? 'index';
 
-    return (new ClientDispatcher)->dispatch($controller, $action, $vars,$module);
+    return (new ClientDispatcher)->dispatch($controller, $action, $vars);
 }
 
