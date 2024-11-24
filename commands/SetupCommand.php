@@ -179,7 +179,6 @@ class SetupCommand extends Command
             $output->writeln("<error>Stub file not found at: $clientDispatcherStub</error>");
             return Command::FAILURE;
         }
-
         // Read the stub content
         $clientDispatcherFileContent = file_get_contents($clientDispatcherStub);
 
