@@ -30,6 +30,9 @@ class Application
     public static function activate(): array
     {
         // Activation logic here
+        if(getenv('DELETE_TABLES') && getenv('DELETE_TABLES')){
+            
+        }
         return [
             'status' => 'success',
             'description' => '$addonName module activated successfully',
