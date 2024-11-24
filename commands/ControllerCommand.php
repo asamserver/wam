@@ -14,7 +14,7 @@ class ControllerCommand extends Command
     {
         $this
             ->setDescription('Create a new controller')
-            ->addArgument('name', InputArgument::REQUIRED, 'The name of the controller (e.g., dashboard)')
+            ->addArgument('name', InputArgument::REQUIRED, 'The name of the controller (e.g., Dashboard)')
             // No need for 'type' argument, type is inferred from the directory structure
             ;
     }
@@ -26,25 +26,21 @@ class ControllerCommand extends Command
         // Extract the controller type from the directory structure, e.g., 'admin' or 'client'
         $currentDir = getcwd();
         $type = 'admin'; // Default to admin if no directory exists
-        $controllerDir = $currentDir . '/src/Controllers'; // Default directory for 'admin'
+        $controllerDir = $currentDir . '/src/Controllers/' . ucfirst($type); // Default directory for 'admin'
 
-        // Check if the controller should be placed in the 'client' folder
-        if (is_dir($currentDir . '/src/Controllers')) {
-            $type = 'client';
-            $controllerDir = $currentDir . '/src/Controllers';
-        }
-
-        // Ensure the target controller directory exists
+        // Ensure the target controller directory exists (Create nested directories)
         if (!is_dir($controllerDir)) {
-            mkdir($controllerDir, 0777, true);
+            mkdir($controllerDir, 0777, true); // Ensure all directories in the path are created
         }
 
-        $controllerName = ucfirst($name);
+        // Controller filename and path
+        $controllerName = ucfirst($name) . 'Controller';
         $controllerPath = $controllerDir . '/' . $controllerName . '.php';
         
+        // Load and modify the stub
         $stub = file_get_contents(__DIR__ . '/controller.stub');
         
-        // Replace the placeholders
+        // Replace placeholders in the stub
         $stub = str_replace(
             ['{{name}}', '{{type}}'],
             [$controllerName, ucfirst($type)],
@@ -58,3 +54,4 @@ class ControllerCommand extends Command
         return Command::SUCCESS;
     }
 }
+
