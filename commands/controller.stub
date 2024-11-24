@@ -2,7 +2,7 @@
 
 namespace {{namespace}};
 
-use WHMCS\Module\Addon\{{addonName}}\src\Controllers\BaseController;
+use WHMCS\Module\Addon\{{addonName}}\app\Controllers\BaseController;
 
 class {{controllerName}} extends BaseController
 {

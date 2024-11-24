@@ -45,14 +45,14 @@ class SetupCommand extends Command
         $addonName = $input->getArgument('addonName');
         $currentDir = getcwd(); // Current working directory
 
-        // Ensure the src directory exists
-        $srcDir = $currentDir . DIRECTORY_SEPARATOR . 'src';
-        if (!is_dir($srcDir)) {
-            if (!mkdir($srcDir, 0777, true)) {
-                $output->writeln("<error>Failed to create src directory. Please check permissions.</error>");
+        // Ensure the app directory exists
+        $appDir = $currentDir . DIRECTORY_SEPARATOR . 'app';
+        if (!is_dir($appDir)) {
+            if (!mkdir($appDir, 0777, true)) {
+                $output->writeln("<error>Failed to create app directory. Please check permissions.</error>");
                 return Command::FAILURE;
             }
-            $output->writeln("<info>Created src directory: $srcDir</info>");
+            $output->writeln("<info>Created app directory: $appDir</info>");
         }
 
         // Path to the new addon file
@@ -78,7 +78,7 @@ class SetupCommand extends Command
         }
 
         // Now create the Application.php file
-        $applicationFilePath = $srcDir . DIRECTORY_SEPARATOR . 'Application.php';
+        $applicationFilePath = $appDir . DIRECTORY_SEPARATOR . 'Application.php';
         $applicationStub = __DIR__ . '/application.stub';
 
         if (!file_exists($applicationStub)) {
@@ -98,7 +98,7 @@ class SetupCommand extends Command
 
 
         // Now create the Helper.php file
-        $helperDir = $currentDir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Helper';
+        $helperDir = $currentDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Helper';
         if (!is_dir($helperDir)) {
             if (!mkdir($helperDir, 0777, true)) {
                 $output->writeln("<error>Failed to create Helper directory. Please check permissions.</error>");
@@ -134,7 +134,7 @@ class SetupCommand extends Command
         $currentDir = getcwd();
 
         // Set the directory where the AdminDispatcher.php file will be created
-        $adminDispatcherDir = $currentDir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Dispatcher';
+        $adminDispatcherDir = $currentDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Dispatcher';
 
         // Ensure the directory exists, create it if necessary
         if (!is_dir($adminDispatcherDir)) {
@@ -210,7 +210,7 @@ class SetupCommand extends Command
         $currentDir = getcwd();
 
         // Set the directory where the AdminDispatcher.php file will be created
-        $routersatcherDir =  $currentDir . DIRECTORY_SEPARATOR . 'src';
+        $routersatcherDir =  $currentDir . DIRECTORY_SEPARATOR . 'app';
 
         // Ensure the directory exists, create it if necessary
         if (!is_dir($routersatcherDir)) {
@@ -268,7 +268,7 @@ class SetupCommand extends Command
 
 
         // Ensure the directory exists, create it if necessary
-        $BaseControllersDir = $currentDir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Controllers';
+        $BaseControllersDir = $currentDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Controllers';
 
         if (!is_dir($BaseControllersDir)) {
             if (!mkdir($BaseControllersDir, 0777, true)) {

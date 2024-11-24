@@ -28,7 +28,7 @@ class ModelCommand extends Command
         $modelName = $input->getArgument('modelName');
         $tableName = strtolower($modelName).'s'; // Automatically set tableName to lowercase modelName
         $currentDir = getcwd();
-        $modelDir = $currentDir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Models';
+        $modelDir = $currentDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Models';
 
         // Ensure the models directory exists
         if (!is_dir($modelDir)) {

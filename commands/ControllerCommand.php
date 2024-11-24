@@ -23,7 +23,7 @@ class ControllerCommand extends Command
         
         // Extract the controller type from the directory structure, e.g., 'admin' or 'client'
         $currentDir = getcwd();
-        $controllerDir = $currentDir . '/src/Controllers'; // Default directory for 'admin'
+        $controllerDir = $currentDir . '/app/Controllers'; // Default directory for 'admin'
 
         // Debug print to check the incoming name argument
         $output->writeln("<info>Received controller name: $name</info>");
@@ -32,7 +32,7 @@ class ControllerCommand extends Command
         $pathParts = explode('/', $name);
         
         // Determine the namespace and directory structure
-        $namespace = 'WHMCS\\Module\\Addon\\' . basename(getcwd()) . '\\src\\Controllers\\' . implode('\\', array_slice($pathParts, 0, -1));
+        $namespace = 'WHMCS\\Module\\Addon\\' . basename(getcwd()) . '\\app\\Controllers\\' . implode('\\', array_slice($pathParts, 0, -1));
         $controllerName = end($pathParts); // The last part is the controller name
         
         // Controller directory path

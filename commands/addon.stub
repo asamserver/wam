@@ -1,12 +1,12 @@
 <?php
 
-include __DIR__ . '/src/vendor/autoload.php';
-include __DIR__ . '/src/Helper/Helper.php';
+include __DIR__ . '/app/vendor/autoload.php';
+include __DIR__ . '/app/Helper/Helper.php';
 
-use WHMCS\Module\Addon\$addonName\src\Dispatcher\AdminDispatcher;
-use WHMCS\Module\Addon\$addonName\src\Dispatcher\ClientDispatcher;
+use WHMCS\Module\Addon\$addonName\app\Dispatcher\AdminDispatcher;
+use WHMCS\Module\Addon\$addonName\app\Dispatcher\ClientDispatcher;
 
-use WHMCS\Module\Addon\$addonName\src\Application;
+use WHMCS\Module\Addon\$addonName\app\Application;
 
 if (!defined('WHMCS')) {
     die('This file cannot be accessed directly');

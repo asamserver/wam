@@ -1,5 +1,5 @@
 <?php
-namespace WHMCS\Module\Addon\$addonName\src;
+namespace WHMCS\Module\Addon\$addonName\app;
 
 require __DIR__ . '/../vendor/autoload.php';
 use WHMCS\Database\Capsule;

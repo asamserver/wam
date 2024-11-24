@@ -1,9 +1,9 @@
 <?php
 
-namespace WHMCS\Module\Addon\$addonName\src;
+namespace WHMCS\Module\Addon\$addonName\app;
 
-use WHMCS\Module\Addon\$addonName\src\Dispatcher\AdminDispatcher;
-use WHMCS\Module\Addon\$addonName\src\Dispatcher\ClientDispatcher;
+use WHMCS\Module\Addon\$addonName\app\Dispatcher\AdminDispatcher;
+use WHMCS\Module\Addon\$addonName\app\Dispatcher\ClientDispatcher;
 
 class Router
 {
