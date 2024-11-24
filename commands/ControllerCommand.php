@@ -34,15 +34,18 @@ class ControllerCommand extends Command
 
         // Controller filename and path
         $controllerName = ucfirst($name);
+        $name=explode('/',$controllerName);
+        $name = $name[count($name)-1];
         $controllerPath = $controllerDir . '/' . $controllerName . '.php';
         
         // Load and modify the stub
         $stub = file_get_contents(__DIR__ . '/controller.stub');
-        
+        $addonName  = basename(getcwd());
+
         // Replace placeholders in the stub
         $stub = str_replace(
-            ['{{name}}'],
-            [$controllerName],
+            ['{{addonName}}','{{name}}','{{controllerName}}'],
+            [$addonName,$name,$controllerName],
             $stub
         );
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace WHMCS\Module\Addon\{{addonName}}\src\Controllers\{{name}};
+namespace WHMCS\Module\Addon\{{addonName}}\src\Controllers\{{controllerName}};
 
 use WHMCS\Module\Addon\{{addonName}}\src\Controllers\BaseController;
 
