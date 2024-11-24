@@ -26,12 +26,12 @@ class ControllerCommand extends Command
         // Extract the controller type from the directory structure, e.g., 'admin' or 'client'
         $currentDir = getcwd();
         $type = 'admin'; // Default to admin if no directory exists
-        $controllerDir = $currentDir . '/src/Controllers/admin'; // Default directory for 'admin'
+        $controllerDir = $currentDir . '/src/Controllers'; // Default directory for 'admin'
 
         // Check if the controller should be placed in the 'client' folder
-        if (is_dir($currentDir . '/src/Controllers/client')) {
+        if (is_dir($currentDir . '/src/Controllers')) {
             $type = 'client';
-            $controllerDir = $currentDir . '/src/Controllers/client';
+            $controllerDir = $currentDir . '/src/Controllers';
         }
 
         // Ensure the target controller directory exists
@@ -39,7 +39,7 @@ class ControllerCommand extends Command
             mkdir($controllerDir, 0777, true);
         }
 
-        $controllerName = ucfirst($name) . 'Controller'; // Add 'Controller' suffix
+        $controllerName = ucfirst($name);
         $controllerPath = $controllerDir . '/' . $controllerName . '.php';
         
         $stub = file_get_contents(__DIR__ . '/controller.stub');
