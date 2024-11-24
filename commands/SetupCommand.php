@@ -180,6 +180,9 @@ class SetupCommand extends Command
             return Command::FAILURE;
         }
 
+
+
+        
         // Read the stub content
         $clientDispatcherFileContent = file_get_contents($clientDispatcherStub);
 
