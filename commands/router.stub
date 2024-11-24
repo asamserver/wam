@@ -3,42 +3,39 @@
 namespace WHMCS\Module\Addon\$addonName\src;
 
 use WHMCS\Module\Addon\$addonName\src\Dispatcher\AdminDispatcher;
+use WHMCS\Module\Addon\$addonName\src\Dispatcher\ClientDispatcher;
 
 class Router
 {
-    protected $routes = [];
+    protected $routes;
 
-    /**
-     * Register a route
-     *
-     * @param string $route
-     * @param array $controllerAction
-     */
-    public function addRoute(string $route, array $controllerAction)
+    public function __construct()
     {
-        $this->routes[$route] = $controllerAction;
+        $this->routes = require __DIR__ . '/routes/web.php';
     }
 
-    /**
-     * Dispatch a route
-     *
-     * @param string $route
-     */
-    public function dispatch(string $route)
+    public function handleRequest(string $area, string $controllerName, string $action, array $vars)
     {
-        if (isset($this->routes[$route])) {
-            list($controllerName, $actionName) = $this->routes[$route];
+        // Determine the route key (e.g., 'admin/dashboard')
+        $routeKey = $area . '/' . $controllerName;
 
-            // Instantiate the controller and call the action method
-            $controller = new $controllerName();
-            if (method_exists($controller, $actionName)) {
-                $response = $controller->$actionName();
-                echo $response;
+        // Check if the route exists
+        if (isset($this->routes[$routeKey])) {
+            $route = $this->routes[$routeKey];
+            $controllerClass = $route['controller'];
+            $actionMethod = $route['action'];
+
+            // Initialize the controller
+            $controller = new $controllerClass();
+
+            // Check if the controller has the method (action)
+            if (method_exists($controller, $actionMethod)) {
+                return $controller->$actionMethod($vars);
             } else {
-                echo "Action $actionName not found in controller $controllerName.";
+                return "Action '$actionMethod' not found in controller '$controllerClass'.";
             }
         } else {
-            echo "Route $route not found.";
+            return "Route '$routeKey' not found.";
         }
     }
 }

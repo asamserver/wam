@@ -1,6 +1,7 @@
 <?php
 
 namespace WHMCS\Module\Addon\$addonName\src\Dispatcher;
+use WHMCS\Module\Addon\$addonName\src\Router;
 
 if (!defined('WHMCS')) {
     die('This file cannot be accessed directly!');
@@ -8,18 +9,17 @@ if (!defined('WHMCS')) {
 
 class AdminDispatcher
 {
-    /**
-     * Dispatch request.
-     *
-     * @param string $controllerName
-     * @param string $action
-     * @param array $parameters
-     *
-     * @return string
-     */
+    protected $router;
+
+    public function __construct()
+    {
+        $this->router = new Router();
+    }
+
     public function dispatch(string $controllerName, string $action, array $parameters = [])
     {
-       // Handle logic here 
+        // Handle request through Router
+        return $this->router->handleRequest('admin', $controllerName, $action, $parameters);
     }
 }
 

@@ -210,7 +210,7 @@ class SetupCommand extends Command
         $currentDir = getcwd();
 
         // Set the directory where the AdminDispatcher.php file will be created
-        $routersatcherDir = $currentDir . DIRECTORY_SEPARATOR . 'routes';
+        $routersatcherDir =  $currentDir . DIRECTORY_SEPARATOR . 'src';
 
         // Ensure the directory exists, create it if necessary
         if (!is_dir($routersatcherDir)) {
@@ -236,7 +236,7 @@ class SetupCommand extends Command
         $routerContent = str_replace('$addonName', $addonName, $routerContent);
 
         // Set the path to the AdminDispatcher.php file
-        $routerFilePath = $routersatcherDir . DIRECTORY_SEPARATOR . 'web.php';
+        $routerFilePath = $routersatcherDir . DIRECTORY_SEPARATOR . 'Router.php';
 
         // Create the AdminDispatcher.php file
         if (file_put_contents($routerFilePath, $routerContent)) {
