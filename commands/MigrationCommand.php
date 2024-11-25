@@ -75,6 +75,51 @@ class MigrationCommand extends Command
     protected function runMigrate(OutputInterface $output)
     {
         $output->writeln("<info>Running migrations...</info>");
-        $output->writeln(shell_exec('php artisan migrate'));
+
+        $migrationFiles = glob('database/migrations/*.php'); // Assuming migrations are in this directory
+
+        if (empty($migrationFiles)) {
+            $output->writeln("<info>No migrations found to run.</info>");
+            return Command::SUCCESS;
+        }
+
+        foreach ($migrationFiles as $migrationFile) {
+            include_once $migrationFile;
+            $className = $this->getClassNameFromFile($migrationFile);
+
+            if (class_exists($className)) {
+                $migrationInstance = new $className();
+
+                // Get the table name for the migration (Assume it's part of the migration class)
+                $tableName = $migrationInstance->getTableName(); // Adjust this line to fit your actual migration structure
+
+                // Check if the table already exists in the database
+                if ($this->checkIfTableExists($tableName)) {
+                    $output->writeln("<info>Table {$tableName} already exists. Skipping migration: {$className}</info>");
+                    continue; // Skip this migration
+                }
+
+                if (method_exists($migrationInstance, 'up')) {
+                    $migrationInstance->up(); // Run the migration
+                    $output->writeln("<info>Ran migration: {$className}</info>");
+                }
+            }
+        }
+
+    }
+
+    protected function checkIfTableExists($tableName)
+    {
+        // Use Capsule to check if the table exists
+        return Capsule::schema()->hasTable($tableName);
+    }
+
+    protected function getClassNameFromFile($file)
+    {
+        // Assuming that the file name corresponds to the class name
+        $className = basename($file, '.php');
+        $className = str_replace('_', '', ucwords($className, '_')); // CamelCase the class name
+
+        return $className;
     }
 }

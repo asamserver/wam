@@ -1,11 +1,16 @@
 #!/usr/bin/env php
 <?php
-require __DIR__ . '/vendor/autoload.php';
 
+
+require __DIR__ . '/vendor/autoload.php';
+use Illuminate\Database\Capsule\Manager as Capsule;
 use Symfony\Component\Console\Application;
 use Dotenv\Dotenv;
+use app\Providers\DotenvServiceProvider;
 
-// Load commands
+
+
+
 require_once __DIR__ . '/commands/SetupCommand.php';
 require_once __DIR__ . '/commands/MigrationCommand.php';
 require_once __DIR__ . '/commands/ModelCommand.php';
@@ -25,3 +30,8 @@ $app->run();
 
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
+
+DatabaseServiceProvider::boot();
+
+
+
