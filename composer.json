@@ -13,7 +13,8 @@
     },
     "autoload": {
         "psr-4": {
-            
+            "WHMCS\\Module\\Addon\\": "app/",
+            "WHMCS\\Module\\Addon\\Providers\\": "app/Providers/"
         }
     },
     "scripts": {
@@ -38,6 +39,6 @@
             "url": "https://github.com/asamserver/wam"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
