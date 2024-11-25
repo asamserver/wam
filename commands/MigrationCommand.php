@@ -2,7 +2,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -35,6 +35,11 @@ class MigrationCommand extends Command
                 return Command::FAILURE;
             }
             $output->writeln("<info>Created database directory: $databaseDir</info>");
+        }
+
+        // Check if the migration already exists
+        if ($this->checkIfMigrationExists($tableName, $output)) {
+            return Command::SUCCESS; // Migration already exists, so skip creation
         }
 
         // Generate the migration file name (timestamp + table name)
@@ -71,13 +76,27 @@ class MigrationCommand extends Command
         return Command::SUCCESS;
     }
 
+    // Check if a migration already exists
+    protected function checkIfMigrationExists($tableName, OutputInterface $output)
+    {
+        $currentDir = getcwd();
+        $databaseDir = $currentDir . DIRECTORY_SEPARATOR . 'database';
+        $migrationFiles = glob($databaseDir . DIRECTORY_SEPARATOR . "*_create_{$tableName}_table.php");
+
+        if (!empty($migrationFiles)) {
+            $output->writeln("<info>Migration for table '{$tableName}' already exists. Skipping creation.</info>");
+            return true; // Migration file already exists
+        }
+
+        return false; // No migration file found
+    }
+
     // Method to run migrations
     protected function runMigrate(OutputInterface $output)
     {
         $output->writeln("<info>Running migrations...</info>");
 
-        $migrationFiles = glob('database/migrations/*.php'); // Assuming migrations are in this directory
-
+        $migrationFiles = glob(__DIR__.'/../database/*.php'); // Assuming migrations are in this directory
         if (empty($migrationFiles)) {
             $output->writeln("<info>No migrations found to run.</info>");
             return Command::SUCCESS;
