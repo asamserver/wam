@@ -13,15 +13,14 @@
     },
     "autoload": {
         "psr-4": {
-            "WHMCS\\Module\\Addon\\": "app/",
-            "WHMCS\\Module\\Addon\\Providers\\": "app/Providers/"
+            
         }
     },
     "scripts": {
         "post-create-project-cmd": [
             "@composer install",
             "@composer dump-autoload",
-            "php whmcs make:addon $(basename `pwd`)"
+            "php asam make:addon $(basename `pwd`)"
         ]
     },
     "config": {
