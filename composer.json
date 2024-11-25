@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": ">=8.0",
-        "illuminate/database": "^1.0",
+        "illuminate/database": "^11.33",
         "illuminate/support": "^11.33",
         "symfony/console": "^6.0",
         "vlucas/phpdotenv": "^5.6"
