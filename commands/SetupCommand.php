@@ -43,9 +43,7 @@ class SetupCommand extends Command
         }
 
         $addonName = $input->getArgument('addonName');
-        $currentDir = getcwd(); // Current working directory
-
-        // Ensure the app directory exists
+        $currentDir = getcwd(); 
         $appDir = $currentDir . DIRECTORY_SEPARATOR . 'app';
         if (!is_dir($appDir)) {
             if (!mkdir($appDir, 0777, true)) {
@@ -54,33 +52,22 @@ class SetupCommand extends Command
             }
             $output->writeln("<info>Created app directory: $appDir</info>");
         }
-
-        // Path to the new addon file
         $addonFilePath = $currentDir . DIRECTORY_SEPARATOR . $addonName . '.php';
-
-        // Path to the stub file (template)
         $stubFile = __DIR__ . '/stubs/addon.stub';
         if (!file_exists($stubFile)) {
             $output->writeln("<error>Stub file not found at: $stubFile</error>");
             return Command::FAILURE;
         }
-
-        // Read stub content and replace placeholders
         $addonFileContent = file_get_contents($stubFile);
         $addonFileContent = str_replace('$addonName', $addonName, $addonFileContent);
-
-        // Create the addon file
         if (file_put_contents($addonFilePath, $addonFileContent)) {
             $output->writeln("<info>Created addon file: $addonFilePath</info>");
         } else {
             $output->writeln("<error>Failed to create $addonFilePath. Please check permissions.</error>");
             return Command::FAILURE;
         }
-
-        // Now create the Application.php file
         $applicationFilePath = $appDir . DIRECTORY_SEPARATOR . 'Application.php';
         $applicationStub = __DIR__ . '/stubs/application.stub';
-
         if (!file_exists($applicationStub)) {
             $output->writeln("<error>Stub file not found at: $applicationStub</error>");
             return Command::FAILURE;
@@ -95,9 +82,6 @@ class SetupCommand extends Command
             $output->writeln("<error>Failed to create $applicationFilePath. Please check permissions.</error>");
             return Command::FAILURE;
         }
-
-
-        // Now create the Helper.php file
         $helperDir = $currentDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Helper';
         if (!is_dir($helperDir)) {
             if (!mkdir($helperDir, 0777, true)) {
@@ -125,18 +109,9 @@ class SetupCommand extends Command
             return Command::FAILURE;
         }
 
-
-        // Now create the AdminDispatcher.php file
-        // Get the addon name from the argument
         $addonName = $input->getArgument('addonName');
-
-        // Get the current working directory
         $currentDir = getcwd();
-
-        // Set the directory where the AdminDispatcher.php file will be created
         $adminDispatcherDir = $currentDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Dispatcher';
-
-        // Ensure the directory exists, create it if necessary
         if (!is_dir($adminDispatcherDir)) {
             if (!mkdir($adminDispatcherDir, 0777, true)) {
                 $output->writeln("<error>Failed to create adminDispatcher directory. Please check permissions.</error>");
@@ -144,25 +119,14 @@ class SetupCommand extends Command
             }
             $output->writeln("<info>Created adminDispatcher directory: $adminDispatcherDir</info>");
         }
-
-        // Path to the stub file
         $adminDispatcherStub = __DIR__ . '/stubs/adminDispatcher.stub';
-
         if (!file_exists($adminDispatcherStub)) {
             $output->writeln("<error>Stub file not found at: $adminDispatcherStub</error>");
             return Command::FAILURE;
         }
-
-        // Read the stub content
         $adminDispatcherFileContent = file_get_contents($adminDispatcherStub);
-
-        // Replace the placeholder $addonName with the actual addon name
         $adminDispatcherFileContent = str_replace('$addonName', $addonName, $adminDispatcherFileContent);
-
-        // Set the path to the AdminDispatcher.php file
         $adminDispatcherFilePath = $adminDispatcherDir . DIRECTORY_SEPARATOR . 'AdminDispatcher.php';
-
-        // Create the AdminDispatcher.php file
         if (file_put_contents($adminDispatcherFilePath, $adminDispatcherFileContent)) {
             $output->writeln("<info>Created AdminDispatcher file: $adminDispatcherFilePath</info>");
         } else {
@@ -180,39 +144,18 @@ class SetupCommand extends Command
             return Command::FAILURE;
         }
 
-
-
-
-        // Read the stub content
         $clientDispatcherFileContent = file_get_contents($clientDispatcherStub);
-
-        // Replace the placeholder $addonName with the actual addon name
         $clientDispatcherFileContent = str_replace('$addonName', $addonName, $clientDispatcherFileContent);
-
-        // Set the path to the AdminDispatcher.php file
         $clientDispatcherFilePath = $adminDispatcherDir . DIRECTORY_SEPARATOR . 'ClientDispatcher.php';
-
-        // Create the AdminDispatcher.php file
         if (file_put_contents($clientDispatcherFilePath, $clientDispatcherFileContent)) {
             $output->writeln("<info>Created AdminDispatcher file: $clientDispatcherFilePath</info>");
         } else {
             $output->writeln("<error>Failed to create $clientDispatcherFilePath. Please check permissions.</error>");
             return Command::FAILURE;
         }
-
-
-
-
-        // Now create the Router.php file
         $addonName = $input->getArgument('addonName');
-
-        // Get the current working directory
         $currentDir = getcwd();
-
-        // Set the directory where the AdminDispatcher.php file will be created
         $routersatcherDir =  $currentDir . DIRECTORY_SEPARATOR . 'app';
-
-        // Ensure the directory exists, create it if necessary
         if (!is_dir($routersatcherDir)) {
             if (!mkdir($routersatcherDir, 0777, true)) {
                 $output->writeln("<error>Failed to create adminDispatcher directory. Please check permissions.</error>");
@@ -220,8 +163,6 @@ class SetupCommand extends Command
             }
             $output->writeln("<info>Created adminDispatcher directory: $routersatcherDir</info>");
         }
-
-        // Path to the stub file
         $RouterStub = __DIR__ . '/stubs/router.stub';
 
         if (!file_exists($RouterStub)) {
@@ -229,16 +170,9 @@ class SetupCommand extends Command
             return Command::FAILURE;
         }
 
-        // Read the stub content
         $routerContent = file_get_contents($RouterStub);
-
-        // Replace the placeholder $addonName with the actual addon name
         $routerContent = str_replace('$addonName', $addonName, $routerContent);
-
-        // Set the path to the AdminDispatcher.php file
         $routerFilePath = $routersatcherDir . DIRECTORY_SEPARATOR . 'Router.php';
-
-        // Create the AdminDispatcher.php file
         if (file_put_contents($routerFilePath, $routerContent)) {
             $output->writeln("<info>Created Router file: $routerFilePath</info>");
         } else {
@@ -250,26 +184,8 @@ class SetupCommand extends Command
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // Ensure the directory exists, create it if necessary
         $BaseControllersDir = $currentDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Controllers';
-
         if (!is_dir($BaseControllersDir)) {
             if (!mkdir($BaseControllersDir, 0777, true)) {
                 $output->writeln("<error>Failed to create BaseController directory. Please check permissions.</error>");
@@ -277,34 +193,21 @@ class SetupCommand extends Command
             }
             $output->writeln("<info>Created BaseController directory: $BaseControllersDir</info>");
         }
-
-        // Path to the stub file
         $BaseControllerStub = __DIR__ . '/stubs/basecontroller.stub';
-
         if (!file_exists($BaseControllerStub)) {
             $output->writeln("<error>Stub file not found at: $BaseControllerStub</error>");
             return Command::FAILURE;
         }
-
-        // Read the stub content
         $BaseControllerFileContent = file_get_contents($BaseControllerStub);
-
-        // Replace the placeholder $addonName with the actual addon name
         $BaseControllerFileContent = str_replace('$addonName', $addonName, $BaseControllerFileContent);
-        // Set the path to the BaseController.php file
         $BaseControllerFilePath = $BaseControllersDir . DIRECTORY_SEPARATOR . 'BaseController.php';
-
-        // Check and create the file
         $writeResult = file_put_contents($BaseControllerFilePath, $BaseControllerFileContent);
-
         if ($writeResult === false) {
             $output->writeln("<error>Failed to create $BaseControllerFilePath. Please check permissions.</error>");
             return Command::FAILURE;
         } else {
             $output->writeln("<info>Created BaseController file: $BaseControllerFilePath</info>");
         }
-
-
 
         return Command::SUCCESS;
     }

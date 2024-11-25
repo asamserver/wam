@@ -24,11 +24,7 @@ class Router
             $route = $this->routes[$routeKey];
             $controllerClass = $route['controller'];
             $actionMethod = $route['action'];
-
-            // Initialize the controller
             $controller = new $controllerClass();
-
-            // Check if the controller has the method (action)
             if (method_exists($controller, $actionMethod)) {
                 return $controller->$actionMethod($vars);
             } else {

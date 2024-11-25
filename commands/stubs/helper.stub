@@ -6,34 +6,16 @@ if (!defined('WHMCS')) {
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 
-
-/**
- * Generate Random Number
- *
- * @return int
- */
 if (!function_exists('${addonName}_generateRandomNumber')) {
     function ${addonName}_generateRandomNumber(): int
     {
-        // Get the current time in microseconds
         $microtime = microtime(true);
-
-        // Use the microtime to seed the random number generator
         mt_srand($microtime);
-
-        // Generate a random number
         $randomNumber = mt_rand();
-
         return $randomNumber;
     }
 }
 
-/**
- * Get Client ID by User ID
- *
- * @param int|null $userId
- * @return mixed
- */
 if (!function_exists('${addonName}_getClientId')) {
     function ${addonName}_getClientId($userId = null)
     {
@@ -41,21 +23,14 @@ if (!function_exists('${addonName}_getClientId')) {
             return $_SESSION['uid'];
         }
         $userId = $userId ?? json_decode($_SESSION['login_auth_tk'], true)['id'];
-
         return Capsule::table('tblusers_clients')->where('auth_user_id', $userId)->first()->client_id;
     }
 }
 
-/**
- * Get Controller Class
- *
- * @param string $controllerName
- * @return string
- */
+
 if (!function_exists('${addonName}_getControllerClass')) {
     function ${addonName}_getControllerClass(string $controllerName): string
     {
-        // Return the fully qualified class name
         return "WHMCS\\Module\\Addon\\${addonName}\\Controllers\\Admin\\" . ucfirst($controllerName) . "Controller";
     }
 }

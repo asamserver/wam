@@ -18,7 +18,6 @@ class AdminDispatcher
 
     public function dispatch(string $controllerName, string $action, array $parameters = [])
     {
-        // Handle request through Router
         return $this->router->handleRequest('admin', $controllerName, $action, $parameters);
     }
 }

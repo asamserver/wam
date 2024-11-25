@@ -9,9 +9,7 @@ class {{controllerName}} extends BaseController
 
     public function index()
     {
-        // Default action (index) for this controller
         echo "Welcome to the {{controllerName}} ";
     }
 
-    // You can add more actions or methods here for handling specific routes
 }

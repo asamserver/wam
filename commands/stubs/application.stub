@@ -6,11 +6,7 @@ use WHMCS\Database\Capsule;
 
 class Application
 {
-    /**
-     * Initial configuration for the module
-     *
-     * @return string[]
-     */
+   
     public static function config(): array
     {
         return [
@@ -22,14 +18,8 @@ class Application
         ];
     }
 
-    /**
-     * Activate module
-     *
-     * @return string[]
-     */
     public static function activate(): array
     {
-        // Activation logic here
         if(getenv('DELETE_TABLES') && getenv('DELETE_TABLES')){
             
         }
@@ -39,23 +29,16 @@ class Application
         ];
     }
 
-    /**
-     * Deactivate module
-     *
-     * @return string[]
-     */
+
     public static function deactivate(): array
     {
-        // Deactivation logic here
         return [
             'status' => 'success',
             'description' => '$addonName module deactivated successfully',
         ];
     }
 
-    /**
-     * Example of how to add a custom API (optional)
-     */
+    
     public static function createCustomApi()
     {
         // Custom API creation logic

@@ -20,23 +20,17 @@ class MakeEnvCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $currentDir = getcwd(); // Get the current working directory
+        $currentDir = getcwd(); 
         $envPath = $currentDir . DIRECTORY_SEPARATOR . '.env';
         $envExamplePath = $currentDir . DIRECTORY_SEPARATOR . '.env.example';
-
-        // Check if .env file already exists
         if (file_exists($envPath)) {
             $output->writeln('<info>.env file already exists. No action taken.</info>');
             return Command::SUCCESS;
         }
-
-        // Check if .env.example exists
         if (!file_exists($envExamplePath)) {
             $output->writeln('<error>.env.example file does not exist. Unable to create .env file.</error>');
             return Command::FAILURE;
         }
-
-        // Copy .env.example to .env
         try {
             if (copy($envExamplePath, $envPath)) {
                 $output->writeln('<info>.env file successfully created from .env.example.</info>');

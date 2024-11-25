@@ -25,9 +25,7 @@ class MigrationCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $tableName = $input->getArgument('tableName');
-        $currentDir = getcwd(); // Current working directory
-
-        // Ensure the 'database' folder exists
+        $currentDir = getcwd(); 
         $databaseDir = $currentDir . DIRECTORY_SEPARATOR . 'database';
         if (!is_dir($databaseDir)) {
             if (!mkdir($databaseDir, 0777, true)) {
@@ -37,17 +35,12 @@ class MigrationCommand extends Command
             $output->writeln("<info>Created database directory: $databaseDir</info>");
         }
 
-        // Check if the migration already exists
         if ($this->checkIfMigrationExists($tableName, $output)) {
             return Command::SUCCESS; // Migration already exists, so skip creation
         }
-
-        // Generate the migration file name (timestamp + table name)
         $timestamp = date('Y_m_d_His');
         $migrationFileName = "create_{$tableName}_table.php";
         $migrationFilePath = $databaseDir . DIRECTORY_SEPARATOR . $timestamp . '_' . $migrationFileName;
-
-        // Load the stub file from the current directory
         $stubPath = __DIR__ . '/stubs/migration.stub';
         if (!file_exists($stubPath)) {
             $output->writeln("<error>Migration stub file not found at: $stubPath</error>");
@@ -55,19 +48,13 @@ class MigrationCommand extends Command
         }
 
         $stub = file_get_contents($stubPath);
-
-        // Replace the tableName placeholder in the stub with the actual table name
         $stub = str_replace('{{tableName}}', $tableName, $stub);
-
-        // Write the migration file
         if (file_put_contents($migrationFilePath, $stub)) {
             $output->writeln("<info>Created migration file: $migrationFilePath</info>");
         } else {
             $output->writeln("<error>Failed to create migration file. Please check permissions.</error>");
             return Command::FAILURE;
         }
-
-        // Optionally run migrations or migrate:fresh here
         $runMigrations = $input->getOption('migrate');
         if ($runMigrations) {
             $this->runMigrate($output);
@@ -76,7 +63,6 @@ class MigrationCommand extends Command
         return Command::SUCCESS;
     }
 
-    // Check if a migration already exists
     protected function checkIfMigrationExists($tableName, OutputInterface $output)
     {
         $currentDir = getcwd();
@@ -85,18 +71,16 @@ class MigrationCommand extends Command
 
         if (!empty($migrationFiles)) {
             $output->writeln("<info>Migration for table '{$tableName}' already exists. Skipping creation.</info>");
-            return true; // Migration file already exists
+            return true; 
         }
-
-        return false; // No migration file found
+        return false;
     }
 
-    // Method to run migrations
     protected function runMigrate(OutputInterface $output)
     {
         $output->writeln("<info>Running migrations...</info>");
 
-        $migrationFiles = glob(__DIR__.'/../database/*.php'); // Assuming migrations are in this directory
+        $migrationFiles = glob(__DIR__.'/../database/*.php');
         if (empty($migrationFiles)) {
             $output->writeln("<info>No migrations found to run.</info>");
             return Command::SUCCESS;
@@ -108,16 +92,11 @@ class MigrationCommand extends Command
 
             if (class_exists($className)) {
                 $migrationInstance = new $className();
-
-                // Get the table name for the migration (Assume it's part of the migration class)
                 $tableName = $migrationInstance->getTableName(); // Adjust this line to fit your actual migration structure
-
-                // Check if the table already exists in the database
                 if ($this->checkIfTableExists($tableName)) {
                     $output->writeln("<info>Table {$tableName} already exists. Skipping migration: {$className}</info>");
                     continue; // Skip this migration
                 }
-
                 if (method_exists($migrationInstance, 'up')) {
                     $migrationInstance->up(); // Run the migration
                     $output->writeln("<info>Ran migration: {$className}</info>");
@@ -129,16 +108,13 @@ class MigrationCommand extends Command
 
     protected function checkIfTableExists($tableName)
     {
-        // Use Capsule to check if the table exists
         return Capsule::schema()->hasTable($tableName);
     }
 
     protected function getClassNameFromFile($file)
     {
-        // Assuming that the file name corresponds to the class name
         $className = basename($file, '.php');
         $className = str_replace('_', '', ucwords($className, '_')); // CamelCase the class name
-
         return $className;
     }
 }

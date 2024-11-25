@@ -22,15 +22,13 @@ class ModelCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // Get the addon name from the parent directory
         $addonName  = basename(getcwd());
 
         $modelName = $input->getArgument('modelName');
-        $tableName = strtolower($modelName).'s'; // Automatically set tableName to lowercase modelName
+        $tableName = strtolower($modelName).'s'; 
         $currentDir = getcwd();
         $modelDir = $currentDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Models';
 
-        // Ensure the models directory exists
         if (!is_dir($modelDir)) {
             if (!mkdir($modelDir, 0777, true)) {
                 $output->writeln("<error>Failed to create models directory. Please check permissions.</error>");
@@ -38,17 +36,12 @@ class ModelCommand extends Command
             }
         }
 
-        // Path to the model file
         $modelFilePath = $modelDir . DIRECTORY_SEPARATOR . $modelName . '.php';
-
-        // Load and process the stub file
         $stubPath = __DIR__ . '/stubs/model.stub';  // Path to the stub file
         if (!file_exists($stubPath)) {
             $output->writeln("<error>Model stub file not found: $stubPath</error>");
             return Command::FAILURE;
         }
-
-        // Read the stub and replace placeholders
         $stubContent = file_get_contents($stubPath);
         $modelStub = str_replace(
             ['{{addonName}}', '{{modelName}}', '{{tableName}}'],

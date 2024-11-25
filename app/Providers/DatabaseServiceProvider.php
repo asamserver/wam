@@ -20,11 +20,7 @@ class DatabaseServiceProvider
             'collation' => $connectionConfig['collation'],
             'prefix'    => $connectionConfig['prefix'],
         ]);
-
-        // Set Capsule to be globally accessible
         $capsule->setAsGlobal();
-
-        // Boot Eloquent ORM
         $capsule->bootEloquent();
     }
 }

@@ -4,13 +4,7 @@ namespace WHMCS\Module\Addon\$addonName\app\Controllers;
 
 class BaseController
 {
-    /**
-     * Render an HTML view
-     * 
-     * @param string $view The view file name (without the `.php` extension)
-     * @param array $data Data to pass to the view
-     * @return string The rendered view
-     */
+   
     protected function renderView($view, $data = [])
     {
         // Path to the view file
@@ -34,13 +28,7 @@ class BaseController
         return $viewContent;
     }
 
-    /**
-     * Render JavaScript content by including a JavaScript file
-     * 
-     * @param string $script The name of the JavaScript file (without .js extension)
-     * @param array $data Data to inject into the JavaScript file
-     * @return string The rendered JavaScript content
-     */
+    
     protected function renderJs($script, $data = [])
     {
         // Path to the JS file
@@ -60,16 +48,9 @@ class BaseController
         }
     }
 
-    /**
-     * Render CSS content by including a CSS file
-     * 
-     * @param string $style The name of the CSS file (without .css extension)
-     * @param array $data Data to inject into the CSS file
-     * @return string The rendered CSS content
-     */
+   
     protected function renderCss($style, $data = [])
     {
-        // Path to the CSS file
         $cssFile = __DIR__ . "/../../../resource/css/{$style}.css";
 
         if (file_exists($cssFile)) {
