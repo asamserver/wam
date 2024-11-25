@@ -1,7 +1,7 @@
 <?php
 
-// use WHMCS\Module\Addon\kyc\src\Controllers\Admin\DashboardController;
-// use WHMCS\Module\Addon\kyc\src\Controllers\Client\DashboardController as ClientDashboardController;
+// use WHMCS\Module\Addon\kyc\app\Controllers\Admin\DashboardController;
+// use WHMCS\Module\Addon\kyc\app\Controllers\Client\DashboardController as ClientDashboardController;
 
 // return [
 //     // Admin routes
