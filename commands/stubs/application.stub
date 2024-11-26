@@ -3,24 +3,27 @@ namespace WHMCS\Module\Addon\$addonName\app;
 
 require __DIR__ . '/../vendor/autoload.php';
 use WHMCS\Database\Capsule;
-
+use Dotenv\Dotenv;
+$dotenv = Dotenv::createImmutable(__DIR__.'/../');
+$dotenv->load();
 class Application
 {
    
     public static function config(): array
     {
         return [
-            'name' => getenv('MODULE') ?? '$addonName',
+            'name' => env('MODULE_NAME') ?? '$addonName',
             'description' => 'Description for $addonName',
-            'author' => getenv('AUTHOR') ?? 'Your Name',
-            'version' => getenv('VERSION') ?? '1.0.0',
-            'enabled' => getenv('APP_ENABLE') ?? true,
+            'author' => env('AUTHOR') ?? 'Your Name',
+            'version' => env('VERSION') ?? '1.0.0',
+            'enabled' => env('APP_ENABLE') ?? true,
+            'fields' => []
         ];
     }
 
     public static function activate(): array
     {
-        if(getenv('DELETE_TABLES') && getenv('DELETE_TABLES')){
+        if(env('DELETE_TABLES') && env('DELETE_TABLES')){
             
         }
         return [

@@ -1,6 +1,6 @@
 <?php
 
-include __DIR__ . '/app/vendor/autoload.php';
+include __DIR__ . '/vendor/autoload.php';
 include __DIR__ . '/app/Helper/Helper.php';
 
 use WHMCS\Module\Addon\$addonName\app\Dispatcher\AdminDispatcher;

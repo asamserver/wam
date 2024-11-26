@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'name' => getenv('MODULE') ?? 'kyc',
+    'name' => env('MODULE_NAME') ?? 'kyc',
     'description' => 'Description for kyc',
-    'author' => getenv('AUTHOR') ?? 'Your Name',
-    'version' => getenv('VERSION') ?? '1.0.0',
-    'enabled' => getenv('APP_ENABLE') ?? true,
+    'author' => env('AUTHOR') ?? 'Your Name',
+    'version' => env('VERSION') ?? '1.0.0',
+    'enabled' => env('APP_ENABLE') ?? true,
 ];
