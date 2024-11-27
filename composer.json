@@ -19,10 +19,12 @@
         "post-create-project-cmd": [
             "@composer install",
             "@composer dump-autoload",
+            "php -r \"file_put_contents('composer.json', preg_replace('/\"WHMCS\\\\\\Module\\\\\\Addon\\\\kyc_verification\\\\app\\\\\": \"app\\//', '\"WHMCS\\\\\\Module\\\\\\Addon\\\\'.basename(getcwd()).'\\\\app\\\\\": \"app\\/', file_get_contents('composer.json')));\"",
             "php asam make:addon $(basename `pwd`)",
             "php asam make:controller Client/DashboardController",
             "php asam make:controller Admin/DashboardController"
         ]
+        
     },
     "config": {
         "optimize-autoloader": true,
