@@ -15,41 +15,21 @@ if (!defined('WHMCS')) {
     die('This file cannot be accessed directly');
 }
 
-/**
- * $addonName_config
- *
- * @return array
- */
 function $addonName_config(): array
 {
     return Application::config();
 }
 
-/**
- * $addonName_activate
- *
- * @return array
- */
 function $addonName_activate(): array
 {
     return Application::activate();
 }
 
-/**
- * $addonName_deactivate
- *
- * @return array
- */
 function $addonName_deactivate(): array
 {
     return Application::deactivate();
 }
 
-/**
- * $addonName_output
- *
- * @param $vars
- */
 function $addonName_output($vars)
 {
     $controller = $_REQUEST['controller'] ?? 'dashboard';
