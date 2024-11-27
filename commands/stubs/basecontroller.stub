@@ -12,19 +12,11 @@ class BaseController
         $viewContent = '';
 
         if (file_exists($viewPath)) {
-            // Extract data to variables
             extract($data);
-
-            // Start output buffering
             ob_start();
-
-            // Include the view file
             include $viewPath;
-
-            // Capture the output and store it in $viewContent
             $viewContent = ob_get_clean();
         }
-
         return $viewContent;
     }
 
