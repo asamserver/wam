@@ -20,7 +20,9 @@
             "@composer dump-autoload",
             "php asam make:addon $(basename `pwd`)",
             "php asam make:controller Client/DashboardController",
-            "php asam make:controller Admin/DashboardController"
+            "php asam make:controller Admin/DashboardController",
+            "php composer.php",
+            "@composer dump-autoload"
         ]
         
     },
