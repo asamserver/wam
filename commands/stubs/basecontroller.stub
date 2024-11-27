@@ -32,7 +32,7 @@ class BaseController
     protected function renderJs($script, $data = [])
     {
         // Path to the JS file
-        $jsFile = __DIR__ . "/../../../resource/js/{$script}.js";
+        $jsFile = __DIR__ . "/../../resource/js/{$script}.js";
 
         if (file_exists($jsFile)) {
             $content = file_get_contents($jsFile);
@@ -51,7 +51,7 @@ class BaseController
    
     protected function renderCss($style, $data = [])
     {
-        $cssFile = __DIR__ . "/../../../resource/css/{$style}.css";
+        $cssFile = __DIR__ . "/../../resource/css/{$style}.css";
 
         if (file_exists($cssFile)) {
             $content = file_get_contents($cssFile);
