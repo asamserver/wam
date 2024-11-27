@@ -24,7 +24,7 @@ class MigrationCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $tableName = env('TABLE_PREFIX').$input->getArgument('tableName');
+        $tableName = $input->getArgument('tableName');
         $currentDir = getcwd(); 
         $databaseDir = $currentDir . DIRECTORY_SEPARATOR . 'database';
         if (!is_dir($databaseDir)) {
