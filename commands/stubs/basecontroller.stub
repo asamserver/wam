@@ -7,10 +7,12 @@ class BaseController
    
     protected function renderView($view, $data = [])
     {
-        // Path to the view file
+        $view = str_replace(".","/", $view);
         $viewPath = __DIR__ . "/../../resource/views/{$view}.php";
         $viewContent = '';
-
+        if(gettype($data) !='array'){
+            return '<h2>Data should be a array !!!</h2>';
+        }
         if (file_exists($viewPath)) {
             extract($data);
             ob_start();
