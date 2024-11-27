@@ -14,17 +14,17 @@
         "psr-4": {
         }
     },
-   "scripts": {
+    "scripts": {
         "post-create-project-cmd": [
             "@composer install",
             "@composer dump-autoload",
-            "php -r \"echo 'php asam make:addon ' . basename(getcwd()) . '\\n';\" > run_addon_command.bat",
-            "run_addon_command.bat",
+            "php asam make:addon sis",
             "php asam make:controller Client/DashboardController",
             "php asam make:controller Admin/DashboardController",
             "php composer.php",
             "@composer dump-autoload"
         ]
+        
     },
     "config": {
         "optimize-autoloader": true,
