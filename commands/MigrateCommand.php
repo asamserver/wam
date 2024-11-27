@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class MigrateCommand extends Command
 {
-    protected static $defaultName = 'make:migrate';
+    protected static $defaultName = 'migrate';
 
     protected function configure()
     {
