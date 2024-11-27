@@ -8,6 +8,7 @@ if (!defined('WHMCS')) {
     die('This file cannot be accessed directly!');
 }
 
+
 class AdminDispatcher
 {
     protected $router;
@@ -17,9 +18,10 @@ class AdminDispatcher
         $this->router = new Router();
     }
 
-    public function dispatch(string $controllerName, string $action, array $parameters = [])
+    public function dispatch(string $uri, array $vars = [])
     {
-        return $this->router->handleRequest('Admin', $controllerName, $action, $parameters);
+       
+        return $this->router->handleRequest('GET', $uri, $vars);
     }
 }
 

@@ -8,6 +8,7 @@ if (!defined('WHMCS')) {
     die('This file cannot be accessed directly!');
 }
 
+
 class ClientDispatcher
 {
     protected $router;
@@ -19,6 +20,6 @@ class ClientDispatcher
 
     public function dispatch(string $controllerName, string $action, array $parameters = [])
     {
-        return $this->router->handleRequest('Client', $controllerName, $action, $parameters);
+        return $this->router->handleRequest('GET', $controllerName, $parameters);
     }
 }
