@@ -15,7 +15,7 @@
             "WHMCS\\Module\\Addon\\": "app/"
         }
     },
-    "scripts": {
+   "scripts": {
         "post-create-project-cmd": [
             "@composer install",
             "@composer dump-autoload",
@@ -25,7 +25,6 @@
             "php asam make:controller Admin/DashboardController",
             "@composer dump-autoload"
         ]
-        
     },
     "config": {
         "optimize-autoloader": true,
