@@ -33,8 +33,11 @@ if (file_exists($composerJsonPath)) {
     } else {
         echo "Failed to update composer.json.\n";
     }
+
+    // Remove the PHP file after it has updated the composer.json
+    unlink(__FILE__);
+    echo "PHP script removed successfully.\n";
+
 } else {
     echo "composer.json not found.\n";
 }
-
-?>
