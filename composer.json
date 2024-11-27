@@ -18,7 +18,7 @@
         "post-create-project-cmd": [
             "@composer install",
             "@composer dump-autoload",
-            "php asam make:addon $(basename `pwd`)",
+            "php asam make:addon $(php getdir.php)",
             "php asam make:controller Client/DashboardController",
             "php asam make:controller Admin/DashboardController",
             "php composer.php",
