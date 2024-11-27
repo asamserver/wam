@@ -12,7 +12,6 @@
     },
     "autoload": {
         "psr-4": {
-            "WHMCS\\Module\\Addon\\": "app/"
         }
     },
     "scripts": {
