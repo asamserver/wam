@@ -1,8 +1,6 @@
 <?php
 
 namespace {{namespace}};
-require_once __DIR__.'/../BaseController.php';
-
 use WHMCS\Module\Addon\{{addonName}}\app\Controllers\BaseController;
 
 class {{controllerName}} extends BaseController

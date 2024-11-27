@@ -1,7 +1,6 @@
 <?php
 
 namespace WHMCS\Module\Addon\$addonName\app;
-require __DIR__ . '/../vendor/autoload.php';
 
 class Router
 {
@@ -44,23 +43,15 @@ class Router
         $route = $this->routes[$method][$uri];
         $controllerClass = $route['controller'];
         $actionMethod = $route['action'];
-        $namespace = 'WHMCS\\Module\\Addon\\kyc_verification\\app\\Controllers\\Admin\\';
-        $controllerClassFull = $namespace . $controllerClass;
-        $controllerFile = __DIR__ . '/Controllers/Admin/' . $controllerClass . '.php';
-        if (file_exists($controllerFile)) {
-            require_once $controllerFile;
-        } else {
-            return "Error: Controller file '$controllerFile' not found.";
-        }
-        if (class_exists($controllerClassFull)) {
-            $controller = new $controllerClassFull();
+        if (class_exists($controllerClass)) {
+            $controller = new $controllerClass();
             if (method_exists($controller, $actionMethod)) {
                 return $controller->$actionMethod($vars);
             }
 
-            return "Error: Action '$actionMethod' not found in controller '$controllerClassFull'.";
+            return "Error: Action '$actionMethod' not found in controller '$controllerClass'.";
         }
 
-        return "Error: Class '$controllerClassFull' not found.";
+        return "Error: Class '$controllerClass' not found.";
     }
 }
