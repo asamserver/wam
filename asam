@@ -6,7 +6,6 @@ require __DIR__ . '/vendor/autoload.php';
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Symfony\Component\Console\Application;
 use Dotenv\Dotenv;
-use app\Providers\DotenvServiceProvider;
 
 
 
@@ -31,7 +30,6 @@ $app->run();
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-DatabaseServiceProvider::boot();
 
 
 

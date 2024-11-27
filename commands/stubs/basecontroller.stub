@@ -8,7 +8,7 @@ class BaseController
     protected function renderView($view, $data = [])
     {
         // Path to the view file
-        $viewPath = __DIR__ . "/../../../resource/views/{$view}.php";
+        $viewPath = __DIR__ . "/../../resource/views/{$view}.php";
         $viewContent = '';
 
         if (file_exists($viewPath)) {

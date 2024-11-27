@@ -2,6 +2,9 @@
 
 include __DIR__ . '/vendor/autoload.php';
 include __DIR__ . '/app/Helper/Helper.php';
+include __DIR__ . '/app/Application.php';
+include __DIR__ . '/app/Dispatcher/AdminDispatcher.php';
+include __DIR__ . '/app/Dispatcher/ClientDispatcher.php';
 
 use WHMCS\Module\Addon\$addonName\app\Dispatcher\AdminDispatcher;
 use WHMCS\Module\Addon\$addonName\app\Dispatcher\ClientDispatcher;

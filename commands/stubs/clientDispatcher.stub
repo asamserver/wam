@@ -2,6 +2,10 @@
 
 namespace WHMCS\Module\Addon\$addonName\app\Dispatcher;
 
+include __DIR__ . '/../Router.php';
+
+
+
 use WHMCS\Module\Addon\$addonName\app\Router;
 
 if (!defined('WHMCS')) {
@@ -19,6 +23,6 @@ class ClientDispatcher
 
     public function dispatch(string $controllerName, string $action, array $parameters = [])
     {
-        return $this->router->handleRequest('client', $controllerName, $action, $parameters);
+        return $this->router->handleRequest('Client', $controllerName, $action, $parameters);
     }
 }

@@ -1,37 +1,66 @@
 <?php
 
 namespace WHMCS\Module\Addon\$addonName\app;
-
-use WHMCS\Module\Addon\$addonName\app\Dispatcher\AdminDispatcher;
-use WHMCS\Module\Addon\$addonName\app\Dispatcher\ClientDispatcher;
+require __DIR__ . '/../vendor/autoload.php';
 
 class Router
 {
-    protected $routes;
+    protected $routes = []; 
+    protected $loaded = false;
 
-    public function __construct()
+    public function get(string $uri, string $controller, string $action)
     {
-        $this->routes = require __DIR__ . '/routes/web.php';
+        $this->addRoute('GET', $uri, $controller, $action);
     }
 
-    public function handleRequest(string $area, string $controllerName, string $action, array $vars)
+    public function post(string $uri, string $controller, string $action)
     {
-        // Determine the route key (e.g., 'admin/dashboard')
-        $routeKey = $area . '/' . $controllerName;
+        $this->addRoute('POST', $uri, $controller, $action);
+    }
+    private function addRoute(string $method, string $uri, string $controller, string $action)
+    {
+        $this->routes[$method][$uri] = [
+            'controller' => $controller,
+            'action' => $action,
+        ];
+    }
 
-        // Check if the route exists
-        if (isset($this->routes[$routeKey])) {
-            $route = $this->routes[$routeKey];
-            $controllerClass = $route['controller'];
-            $actionMethod = $route['action'];
-            $controller = new $controllerClass();
+    public function loadRoutes()
+    {
+        if (!$this->loaded) {
+            $this->loaded = true;
+            require __DIR__ . '/../routes/web.php';
+        }
+    }
+
+    public function handleRequest(string $method, string $uri, array $vars = [])
+    {
+        $this->loadRoutes();
+
+        if (!isset($this->routes[$method][$uri])) {
+            return "Error: Route '$uri' not found for method '$method'.";
+        }
+
+        $route = $this->routes[$method][$uri];
+        $controllerClass = $route['controller'];
+        $actionMethod = $route['action'];
+        $namespace = 'WHMCS\\Module\\Addon\\kyc_verification\\app\\Controllers\\Admin\\';
+        $controllerClassFull = $namespace . $controllerClass;
+        $controllerFile = __DIR__ . '/Controllers/Admin/' . $controllerClass . '.php';
+        if (file_exists($controllerFile)) {
+            require_once $controllerFile;
+        } else {
+            return "Error: Controller file '$controllerFile' not found.";
+        }
+        if (class_exists($controllerClassFull)) {
+            $controller = new $controllerClassFull();
             if (method_exists($controller, $actionMethod)) {
                 return $controller->$actionMethod($vars);
-            } else {
-                return "Action '$actionMethod' not found in controller '$controllerClass'.";
             }
-        } else {
-            return "Route '$routeKey' not found.";
+
+            return "Error: Action '$actionMethod' not found in controller '$controllerClassFull'.";
         }
+
+        return "Error: Class '$controllerClassFull' not found.";
     }
 }
