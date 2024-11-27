@@ -10,7 +10,7 @@ class Application
     public static function config(): array
     {
         return [
-            'name' => env('ADDON_MODULE_NAME') ?? '$addonName',
+            'name' => env('APP_MODULE_NAME') ?? '$addonName',
             'description' => 'Description for $addonName',
             'author' => env('AUTHOR') ?? 'Your Name',
             'version' => env('VERSION') ?? '1.0.0',
