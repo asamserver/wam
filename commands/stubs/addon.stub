@@ -32,22 +32,15 @@ function $addonName_deactivate(): array
 
 function $addonName_output($vars)
 {
-    $controller = $_REQUEST['controller'] ?? 'dashboard';
-    
-    $action = $_REQUEST['action'] ?? 'index';
-
-    $response = (new AdminDispatcher)->dispatch($controller, $action, $vars);
-
+     $uri = $_REQUEST['uri'] ?? '/admin/dashboard'; 
+    $response = (new AdminDispatcher)->dispatch($uri, $vars);
     echo $response;
 }
 
 
 function $addonName_clientarea($vars): string
 {
-    $controller = $_REQUEST['controller'] ?? 'dashboard';
-    
-    $action = $_REQUEST['action'] ?? 'index';
-
-    return (new ClientDispatcher)->dispatch($controller, $action, $vars);
+    $uri = $_REQUEST['uri'] ?? '/client/dashboard'; 
+    return (new ClientDispatcher)->dispatch($uri, $vars);
 }
 
