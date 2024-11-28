@@ -1,0 +1,27 @@
+<?php
+namespace WHMCS\Module\Addon\{{addonName}}\app;
+
+use WHMCS\Module\Addon\{{addonName}}\app\Hooks\HooksManager;
+
+class Hooks
+{
+    protected static $hooksManager;
+
+    public static function register()
+    {
+        self::$hooksManager = new HooksManager();
+
+        // Register hooks here
+        // Example:
+        // add_hook('ClientLogin', 1, [new Hooks\ClientLoginHook(), 'handle']);
+    }
+
+    public static function processRedisJobs()
+    {
+        $hooksManager = new HooksManager();
+        $hooksManager->processRedisJobs();
+    }
+}
+
+// Call registration
+Hooks::register();

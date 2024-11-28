@@ -17,6 +17,7 @@ require_once __DIR__ . '/commands/MakeEnvCommand.php';
 require_once __DIR__ . '/commands/ControllerCommand.php';
 require_once __DIR__ . '/commands/MigrateCommand.php';
 
+require_once __DIR__ . '/commands/HooksCommand.php';
 
 $app = new Application('WHMCS Addon Framework', '1.0.0');
 $app->add(new MakeEnvCommand()); 
@@ -25,6 +26,7 @@ $app->add(new MigrationCommand());
 $app->add(new ModelCommand()); 
 $app->add(new ControllerCommand());
 $app->add(new MigrateCommand());
+$app->add(new HooksCommand());
 
 
 $app->run();

@@ -1,0 +1,29 @@
+<?php
+
+namespace WHMCS\Module\Addon\{{addonName}}\app\Hooks;
+
+class HooksManager
+{
+    protected $logFile;
+
+    public function __construct()
+    {
+        $this->logFile = __DIR__ . '/../../hooks.log';
+    }
+
+    public function log($message, $level = 'INFO')
+    {
+        $timestamp = date('Y-m-d H:i:s');
+        $logEntry = "[{$timestamp}] [{$level}] {$message}\n";
+        
+        file_put_contents($this->logFile, $logEntry, FILE_APPEND);
+    }
+
+    public function processRedisJobs()
+    {
+        // Implement Redis job processing logic
+        // This can be a separate command or method to process queued jobs
+    }
+
+    // Additional methods for hook management
+}

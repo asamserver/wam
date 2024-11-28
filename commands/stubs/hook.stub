@@ -1,0 +1,75 @@
+<?php
+
+namespace WHMCS\Module\Addon\{{addonName}}\app\Hooks;
+
+use WHMCS\Module\Addon\{{addonName}}\app\Hooks\HooksManager;
+use Predis\Client as RedisClient;
+
+class {{hookName}}Hook
+{
+    protected $useRedis = {{useRedis}};
+    protected $redisClient;
+    protected $hooksManager;
+
+    public function __construct()
+    {
+        $this->hooksManager = new HooksManager();
+        
+        if ($this->useRedis) {
+            $this->initRedis();
+        }
+    }
+
+    protected function initRedis()
+    {
+        try {
+            $this->redisClient = new RedisClient([
+                'scheme' => env('REDIS_SCHEME', 'tcp'),
+                'host'   => env('REDIS_HOST', '127.0.0.1'),
+                'port'   => env('REDIS_PORT', 6379),
+            ]);
+        } catch (\Exception $e) {
+            // Log error or handle Redis connection failure
+            error_log('Redis connection failed: ' . $e->getMessage());
+            $this->useRedis = false;
+        }
+    }
+
+    public function handle(array $params)
+    {
+        if ($this->useRedis) {
+            // Optionally queue as a job in Redis
+            $this->queueToRedis($params);
+        }
+
+        // Your hook logic here
+        $this->hooksManager->log('{{hookName}} hook executed', 'INFO');
+        
+        // Example hook logic
+        // You can access hook parameters and perform actions
+        // For example, for ClientLogin:
+        // $clientId = $params['userid'];
+        // $username = $params['username'];
+        
+        // Perform your specific hook actions here
+    }
+
+    protected function queueToRedis(array $params)
+    {
+        if (!$this->redisClient) {
+            return;
+        }
+
+        $jobData = [
+            'hook' => '{{hookName}}',
+            'params' => $params,
+            'timestamp' => time()
+        ];
+
+        // Use a unique key for each job
+        $jobKey = "{{addonName}}:hooks:{{hookName}}:" . uniqid();
+        
+        $this->redisClient->set($jobKey, json_encode($jobData));
+        $this->redisClient->expire($jobKey, 3600); // Expire after 1 hour
+    }
+}
