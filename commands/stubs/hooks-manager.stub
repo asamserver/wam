@@ -8,7 +8,7 @@ class HooksManager
 
     public function __construct()
     {
-        $this->logFile = __DIR__ . '/../../hooks.log';
+        $this->logFile = __DIR__ . '/../../storage/logs/hooks.log';
     }
 
     public function log($message, $level = 'INFO')

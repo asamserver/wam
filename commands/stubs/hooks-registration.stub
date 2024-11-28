@@ -18,8 +18,7 @@ class Hooks
 
     public static function processRedisJobs()
     {
-        $hooksManager = new HooksManager();
-        $hooksManager->processRedisJobs();
+        
     }
 }
 
