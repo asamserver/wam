@@ -42,18 +42,20 @@ class {{hookName}}Hook
             $this->queueToRedis($params);
         }
         $this->logic($params);
-        $this->hooksManager->log('ClientLogin hook executed', 'INFO');
+        $this->hooksManager->log('{{hookName}} hook executed', 'INFO');
 
     }
 
     public function logic(array $params){
-         // Example hook logic
-        // You can access hook parameters and perform actions
-        // For example, for ClientLogin:
-        // $clientId = $params['userid'];
-        // $username = $params['username'];
-        
-        // Perform your specific hook actions here
+        try {
+            // if (false) {
+            //    throw new \Exception("Error Message");
+            // }
+
+        } catch (\Exception $e) {
+            $this->hooksManager->log("{{hookName}} logic failed: " . $e->getMessage(), 'ERROR');
+            $this->queueToFailedJobs($params, $e->getMessage());
+        }
     }
 
 
@@ -70,9 +72,30 @@ class {{hookName}}Hook
         ];
 
         // Use a unique key for each job
-        $jobKey = "{{addonName}}:hooks:{{hookName}}:" . uniqid();
+        $jobKey = "{{addonName}}:jobs:{{hookName}}:" . uniqid();
         
         $this->redisClient->set($jobKey, json_encode($jobData));
         $this->redisClient->expire($jobKey, 3600); // Expire after 1 hour
+    }
+
+    protected function queueToFailedJobs(array $params, string $errorMessage)
+    {
+        if (!$this->redisClient) {
+            $this->hooksManager->log("Failed to store job in failed_jobs: Redis client is not available.", 'CRITICAL');
+            return;
+        }
+
+        $failedJobData = [
+            'hook' => '{{hookName}}',
+            'params' => $params,
+            'error' => $errorMessage,
+            'timestamp' => time()
+        ];
+
+        $failedJobKey = "{{addonName}}:failed_jobs:{{hookName}}:" . uniqid();
+
+        $this->redisClient->set($failedJobKey, json_encode($failedJobData));
+        $this->redisClient->expire($failedJobKey, 86400); // Keep failed jobs for 24 hours
+        $this->hooksManager->log("Job moved to failed_jobs: {$failedJobKey}", 'ERROR');
     }
 }
