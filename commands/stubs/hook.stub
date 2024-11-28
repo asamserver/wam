@@ -34,18 +34,20 @@ class {{hookName}}Hook
             $this->useRedis = false;
         }
     }
-
     public function handle(array $params)
     {
         if ($this->useRedis) {
-            // Optionally queue as a job in Redis
+            $this->hooksManager->log('{{hookName}} hook pushed in redis', 'INFO');
+
             $this->queueToRedis($params);
         }
+        $this->logic($params);
+        $this->hooksManager->log('ClientLogin hook executed', 'INFO');
 
-        // Your hook logic here
-        $this->hooksManager->log('{{hookName}} hook executed', 'INFO');
-        
-        // Example hook logic
+    }
+
+    public function logic(array $params){
+         // Example hook logic
         // You can access hook parameters and perform actions
         // For example, for ClientLogin:
         // $clientId = $params['userid'];
@@ -53,6 +55,7 @@ class {{hookName}}Hook
         
         // Perform your specific hook actions here
     }
+
 
     protected function queueToRedis(array $params)
     {
