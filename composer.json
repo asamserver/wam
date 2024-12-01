@@ -6,15 +6,17 @@
     "license": "MIT",
     "require": {
         "php": ">=8.0",
-        "illuminate/support": "^11.33",
-        "symfony/console": "^6.0",
-        "vlucas/phpdotenv": "^5.6",
-        "illuminate/events": "^11.34",
+        "illuminate/events": "^10.0",
+        "illuminate/support": "^10.0",
         "jenssegers/blade": "^2.0",
-        "predis/predis": "^2.3"
+        "nesbot/carbon": "^2.31",
+        "predis/predis": "^2.1",
+        "symfony/console": "^5.0",
+        "vlucas/phpdotenv": "^5.6"
     },
     "autoload": {
         "psr-4": {
+            "WHMCS\\Module\\Addon\\kyc_verification\\app\\": "app/"
         }
     },
     "scripts": {
@@ -24,6 +26,7 @@
             "php addon.php",
             "php asam make:controller Client/DashboardController",
             "php asam make:controller Admin/DashboardController",
+            "php asam make:web",
             "php composer.php",
             "@composer dump-autoload"
         ]

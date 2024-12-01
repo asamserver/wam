@@ -1,4 +1,5 @@
 <?php
+use WHMCS\Database\Capsule;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -8,7 +9,7 @@ class Create{{tableName}}Table extends Migration
 {
     public function up()
     {
-        Schema::create('{{tableName}}', function (Blueprint $table) {
+        Capsule::schema()->create('{{tableName}}', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
         });
@@ -16,6 +17,6 @@ class Create{{tableName}}Table extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('{{tableName}}');
+        Capsule::schema()->dropIfExists('{{tableName}}');
     }
 }

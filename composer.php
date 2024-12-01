@@ -17,7 +17,6 @@ if (file_exists($composerJsonPath)) {
         $composerJson['autoload']['psr-4'] = [];
     }
 
-    // Get the current directory name (e.g., 'kyc_verification')
     $currentDirName = basename(getcwd());
 
     // Define the new PSR-4 autoload entry using the current directory name
