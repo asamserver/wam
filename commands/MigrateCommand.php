@@ -1,6 +1,8 @@
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
 if(env('APP_ENV') == 'production') {
     require_once __DIR__ . '/../../../../init.php';
 }
@@ -23,9 +25,7 @@ class MigrateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        echo "About to create migration history table...\n";
         $this->createMigrationHistoryTable();
-        echo "Finished creating migration history table...\n";
         $output->writeln("<info>Running migrations...</info>");
         $migrationFiles = glob(__DIR__ . '/../database/*.php');
         sort($migrationFiles); // Ensure migrations run in order
@@ -82,13 +82,9 @@ class MigrateCommand extends Command
 
     protected function createMigrationHistoryTable()
     {
-        echo "Checking if migration history table exists...\n";
 
         try {
-            echo "Before hasTable call...\n";
             $exists = Capsule::schema()->hasTable('tbl_migration_history');
-            echo "After hasTable call...\n";
-
             if ($exists) {
                 echo "Table already exists.\n";
             } else {

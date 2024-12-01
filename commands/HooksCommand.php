@@ -47,12 +47,12 @@ class HooksCommand extends Command
 
         $hookStub = file_get_contents($stubPath);
         $hookStub = str_replace([
-            '{{addonName}}', 
-            '{{hookName}}', 
+            '{{addonName}}',
+            '{{hookName}}',
             '{{useRedis}}'
         ], [
-            $addonName, 
-            $hookName, 
+            $addonName,
+            $hookName,
             $useRedis ? 'true' : 'false'
         ], $hookStub);
 
@@ -93,41 +93,62 @@ class HooksCommand extends Command
 
     protected function updateHooksRegistration(OutputInterface $output, string $addonName, string $hookName): void
     {
-        $hooksRegistrationPath = getcwd() . '/Hooks.php';
-        
-        // Create Hooks.php if it doesn't exist
+        $hooksRegistrationPath = getcwd() . '/hooks.php';
+        $hooksRegistrationStubPath = __DIR__ . '/stubs/hooks-registration.stub';
+
+        // Check if Hooks.php already exists
         if (!file_exists($hooksRegistrationPath)) {
-            $hooksRegistrationStubPath = __DIR__ . '/stubs/hooks-registration.stub';
-            
             if (!file_exists($hooksRegistrationStubPath)) {
                 $output->writeln("<error>Hooks registration stub not found!</error>");
                 return;
             }
 
+            // Create Hooks.php using the stub
             $hooksRegistrationStub = file_get_contents($hooksRegistrationStubPath);
             $hooksRegistrationStub = str_replace('{{addonName}}', $addonName, $hooksRegistrationStub);
 
-            if (file_put_contents($hooksRegistrationPath, $hooksRegistrationStub)) {
-                $output->writeln("<info>Created Hooks.php: $hooksRegistrationPath</info>");
-            } else {
+            if (!file_put_contents($hooksRegistrationPath, $hooksRegistrationStub)) {
                 $output->writeln("<error>Failed to create Hooks.php. Check permissions.</error>");
+                return;
             }
+            $output->writeln("<info>Created Hooks.php from stub: $hooksRegistrationPath</info>");
         }
 
-        // Add hook to registration logic
+        // Read existing Hooks.php content
         $hooksContent = file_get_contents($hooksRegistrationPath);
-        $hookRegistrationLine = "        add_hook('" . ucfirst($hookName) . "', 1, [new Hooks\\" . $hookName . "Hook(), 'handle']);";
-        
-        // Only add if not already exists
-        if (strpos($hooksContent, $hookRegistrationLine) === false) {
-            $hooksContent = str_replace(
-                "        // Register hooks here", 
-                "        // Register hooks here\n" . $hookRegistrationLine, 
+
+        // Prepare new hook registration logic
+        $newHookUseStatement = "use WHMCS\\Module\\Addon\\{$addonName}\\app\\Hooks\\{$hookName}Hook;";
+        $newHookRegistration = <<<EOL
+        add_hook('{$hookName}', 1, function(\$params) {
+            \$hookInstance = new {$hookName}Hook();
+            \$hookInstance->handle(\$params);
+        });
+EOL;
+
+        // Add `use` statement if not already present
+        if (strpos($hooksContent, $newHookUseStatement) === false) {
+            $hooksContent = preg_replace(
+                '/(require_once __DIR__ . \'\/vendor\/autoload.php\';\n)/',
+                "$1$newHookUseStatement\n",
                 $hooksContent
             );
-            
-            file_put_contents($hooksRegistrationPath, $hooksContent);
-            $output->writeln("<info>Registered hook: $hookName</info>");
+        }
+
+        // Add hook registration logic if not already present
+        if (strpos($hooksContent, $newHookRegistration) === false) {
+            $hooksContent = preg_replace(
+                '/(\/\/ Register hooks here\n)/',
+                "$1$newHookRegistration\n",
+                $hooksContent
+            );
+        }
+
+        // Write back to Hooks.php
+        if (file_put_contents($hooksRegistrationPath, $hooksContent)) {
+            $output->writeln("<info>Updated Hooks.php with new hook: $hookName</info>");
+        } else {
+            $output->writeln("<error>Failed to update Hooks.php. Check permissions.</error>");
         }
     }
 }

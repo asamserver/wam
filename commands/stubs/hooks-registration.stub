@@ -1,6 +1,7 @@
 <?php
 namespace WHMCS\Module\Addon\{{addonName}}\app;
 
+require_once __DIR__ . '/vendor/autoload.php';
 use WHMCS\Module\Addon\{{addonName}}\app\Hooks\HooksManager;
 
 class Hooks
@@ -12,15 +13,13 @@ class Hooks
         self::$hooksManager = new HooksManager();
 
         // Register hooks here
-        // Example:
-        // add_hook('ClientLogin', 1, [new Hooks\ClientLoginHook(), 'handle']);
     }
 
     public static function processRedisJobs()
     {
-        
+        // Process jobs from Redis (if applicable)
     }
 }
 
-// Call registration
+// Initialize hooks
 Hooks::register();
