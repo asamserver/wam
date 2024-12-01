@@ -2,8 +2,6 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Illuminate\Database\Capsule\Manager as Capsule;
-use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,7 +25,10 @@ class MigrationCommand extends Command
         $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
         $dotenv->load();
 
-        // Fetch the table name
+        if(!env('DB_PREFIX') || env('DB_PREFIX') == ''){
+            echo 'Please set DB_PREFIX variable in .env file';
+            return Command::FAILURE;
+        }
         $tableName = env('DB_PREFIX').'_' . $input->getArgument('tableName');
         $currentDir = getcwd();
         $databaseDir = $currentDir . DIRECTORY_SEPARATOR . 'database';
@@ -71,12 +72,6 @@ class MigrationCommand extends Command
             return Command::FAILURE;
         }
 
-        // Optionally run migrations
-        $runMigrations = $input->getOption('migrate');
-        if ($runMigrations) {
-            $this->runMigrate($output);
-        }
-
         return Command::SUCCESS;
     }
 
@@ -93,47 +88,9 @@ class MigrationCommand extends Command
         return false;
     }
 
-    protected function runMigrate(OutputInterface $output)
-    {
-        $output->writeln("<info>Running migrations...</info>");
+    
 
-        $migrationFiles = glob(__DIR__ . '/../database/*.php');
-        if (empty($migrationFiles)) {
-            $output->writeln("<info>No migrations found to run.</info>");
-            return Command::SUCCESS;
-        }
-
-        foreach ($migrationFiles as $migrationFile) {
-            include_once $migrationFile;
-            $className = $this->getClassNameFromFile($migrationFile);
-
-            if (class_exists($className)) {
-                $migrationInstance = new $className();
-                $tableName = $migrationInstance->getTableName();
-                if ($this->checkIfTableExists($tableName)) {
-                    $output->writeln("<info>Table {$tableName} already exists. Skipping migration: {$className}</info>");
-                    continue;
-                }
-                if (method_exists($migrationInstance, 'up')) {
-                    $migrationInstance->up();
-                    $output->writeln("<info>Ran migration: {$className}</info>");
-                }
-            }
-        }
-    }
-
-    protected function checkIfTableExists($tableName)
-    {
-        return Capsule::schema()->hasTable($tableName);
-    }
-
-    protected function getClassNameFromFile($file)
-    {
-        $className = basename($file, '.php');
-        $className = str_replace('_', '', ucwords($className, '_'));
-        return $className;
-    }
-
+    
     // Create a class name from the table name (e.g., mm_users -> CreateMmUsersTable)
     protected function getClassNameFromTableName($tableName)
     {

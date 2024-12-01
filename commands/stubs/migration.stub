@@ -1,11 +1,14 @@
 <?php
-use WHMCS\Database\Capsule;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 
-class Create{{tableName}}Table extends Migration
+use WHMCS\Database\Capsule;
+
+
+
+class {{className}} extends Migration
 {
     public function up()
     {
