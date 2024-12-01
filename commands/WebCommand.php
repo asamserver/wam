@@ -22,7 +22,6 @@ class WebCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $addonName  = basename(getcwd());
-
         $currentDir = getcwd();
         $webDir = $currentDir . DIRECTORY_SEPARATOR . 'routes';
 
@@ -33,18 +32,18 @@ class WebCommand extends Command
             }
         }
 
-        $webFilePath = $webDir . DIRECTORY_SEPARATOR.'web.php';
+        $webFilePath = $webDir . DIRECTORY_SEPARATOR . 'web.php';
         $stubPath = __DIR__ . '/stubs/web.stub';  // Path to the stub file
+
         if (!file_exists($stubPath)) {
             $output->writeln("<error>web stub file not found: $stubPath</error>");
             return Command::FAILURE;
         }
+
         $stubContent = file_get_contents($stubPath);
-        $webStub = str_replace(
-            ['{{addonName}}'],
-            [$addonName],
-            $stubContent
-        );
+
+        // Replace placeholder with addon name
+        $webStub = str_replace('{{addonName}}', $addonName, $stubContent);
 
         // Write the web file
         if (file_put_contents($webFilePath, $webStub)) {
