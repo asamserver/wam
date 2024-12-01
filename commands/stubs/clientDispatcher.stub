@@ -18,8 +18,9 @@ class ClientDispatcher
         $this->router = new Router();
     }
 
-    public function dispatch(string $controllerName, string $action, array $parameters = [])
+    public function dispatch(string $uri, array $vars = [])
     {
-        return $this->router->handleRequest('GET', $controllerName, $parameters);
+       
+        return $this->router->handleRequest('GET', $uri, $vars);
     }
 }
