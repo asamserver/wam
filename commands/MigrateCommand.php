@@ -1,9 +1,8 @@
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
-if(env('APP_ENV') != 'production') {
+if(env('APP_ENV') == 'production') {
     require_once __DIR__ . '/../../../../init.php';
-
 }
 
 use Carbon\Carbon;
