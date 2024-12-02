@@ -15,10 +15,6 @@ class Hooks
         // Register hooks here
     }
 
-    public static function processRedisJobs()
-    {
-        // Process jobs from Redis (if applicable)
-    }
 }
 
 Hooks::register();
