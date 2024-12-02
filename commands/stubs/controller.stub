@@ -8,7 +8,7 @@ class {{controllerName}} extends BaseController
 
     public function index(array $vars)
     {
-        echo "Welcome to the {{controllerName}} ";
+        echo "Welcome to the {{addonName}}  -  {{controllerName}} ";
     }
 
 }

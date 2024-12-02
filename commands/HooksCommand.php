@@ -17,14 +17,14 @@ class HooksCommand extends Command
         $this
             ->setDescription('Create a new WHMCS hook')
             ->addArgument('name', InputArgument::REQUIRED, 'The name of the hook (e.g., ClientLogin)')
-            ->addOption('use-job', null, InputOption::VALUE_OPTIONAL, 'Enable Redis for this hook', false);
+            ->addOption('usejob', null, InputOption::VALUE_OPTIONAL, 'Enable Redis for this hook', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $addonName = basename(getcwd());
         $hookName = $input->getArgument('name');
-        $useJob = $input->getOption('use-job') !== false;
+        $useJob = $input->getOption('usejob') !== false;
 
         // Ensure Hooks directory exists
         $hooksDir = getcwd() . '/app/Hooks';

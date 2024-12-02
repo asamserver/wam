@@ -12,8 +12,6 @@ class Application
 
         $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
         $dotenv->load();
-
-        
         return [
             'name' => env('APP_MODULE_NAME') ?? 'Module Name',
             'description' => 'Description for Module Name',
@@ -27,9 +25,6 @@ class Application
 
     public static function activate(): array
     {
-        if(env('DELETE_TABLES') && env('DELETE_TABLES')){
-            
-        }
         return [
             'status' => 'success',
             'description' => '$addonName module activated successfully',
