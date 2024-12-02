@@ -53,7 +53,7 @@ class {{hookName}}Hook
     protected function saveJob(array $jobData): bool
     {
         try {
-            Capsule::table('jobs')->insert($jobData);
+            Capsule::table('job_handler_jobs')->insert($jobData);
             return true;
         } catch (\Exception $e) {
             $this->hooksManager->log('MySQL save job failed: ' . $e->getMessage(), 'ERROR');
@@ -64,7 +64,7 @@ class {{hookName}}Hook
     protected function saveFailedJob(array $jobData, string $errorMessage): bool
     {
         try {
-            Capsule::table('failed_jobs')->insert([
+            Capsule::table('job_handler_failed_jobs')->insert([
                 'job_key' => $jobData['hook'] . ':' . uniqid(),
                 'job_data' => json_encode($jobData),
                 'error_message' => $errorMessage,
