@@ -3,50 +3,41 @@
 namespace WHMCS\Module\Addon\{{addonName}}\app\Hooks;
 
 use WHMCS\Module\Addon\{{addonName}}\app\Hooks\HooksManager;
-use Predis\Client as RedisClient;
+use WHMCS\Database\Capsule;
 
 class {{hookName}}Hook
 {
-    protected $useRedis = {{useRedis}};
+    protected $useRedis = false;
     protected $redisClient;
     protected $hooksManager;
+
 
     public function __construct()
     {
         $this->hooksManager = new HooksManager();
-        
-        if ($this->useRedis) {
-            $this->initRedis();
-        }
     }
 
-    protected function initRedis()
-    {
-        try {
-            $this->redisClient = new RedisClient([
-                'scheme' => env('REDIS_SCHEME', 'tcp'),
-                'host'   => env('REDIS_HOST', '127.0.0.1'),
-                'port'   => env('REDIS_PORT', 6379),
-            ]);
-        } catch (\Exception $e) {
-            // Log error or handle Redis connection failure
-            error_log('Redis connection failed: ' . $e->getMessage());
-            $this->useRedis = false;
-        }
-    }
     public function handle(array $params)
     {
-        if ($this->useRedis) {
-            $this->hooksManager->log('{{hookName}} hook pushed in redis', 'INFO');
-
-            $this->queueToRedis($params);
-        }
-        $this->logic($params);
         $this->hooksManager->log('{{hookName}} hook executed', 'INFO');
 
+        $jobData = [
+            'hook' => '{{hookName}}',
+            'params' => json_encode($params),
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+        if ($this->useRedis) {
+            if (!$this->saveJob($jobData)) {
+                $this->hooksManager->log('Failed to save job to MySQL', 'ERROR');
+            }
+        }else{
+            $this->logic($params);
+        }
     }
 
-    public function logic(array $params){
+   
+    public function logic(array $params)
+    {
         try {
             // if (false) {
             //    throw new \Exception("Error Message");
@@ -54,48 +45,35 @@ class {{hookName}}Hook
 
         } catch (\Exception $e) {
             $this->hooksManager->log("{{hookName}} logic failed: " . $e->getMessage(), 'ERROR');
-            $this->queueToFailedJobs($params, $e->getMessage());
+            $this->saveFailedJob($params, $e->getMessage());
         }
     }
 
 
-    protected function queueToRedis(array $params)
+    protected function saveJob(array $jobData): bool
     {
-        if (!$this->redisClient) {
-            return;
+        try {
+            Capsule::table('jobs')->insert($jobData);
+            return true;
+        } catch (\Exception $e) {
+            $this->hooksManager->log('MySQL save job failed: ' . $e->getMessage(), 'ERROR');
+            return false;
         }
-
-        $jobData = [
-            'hook' => '{{hookName}}',
-            'params' => $params,
-            'timestamp' => time()
-        ];
-
-        // Use a unique key for each job
-        $jobKey = "{{addonName}}:jobs:{{hookName}}:" . uniqid();
-        
-        $this->redisClient->set($jobKey, json_encode($jobData));
-        $this->redisClient->expire($jobKey, 3600); // Expire after 1 hour
     }
 
-    protected function queueToFailedJobs(array $params, string $errorMessage)
+    protected function saveFailedJob(array $jobData, string $errorMessage): bool
     {
-        if (!$this->redisClient) {
-            $this->hooksManager->log("Failed to store job in failed_jobs: Redis client is not available.", 'CRITICAL');
-            return;
+        try {
+            Capsule::table('failed_jobs')->insert([
+                'job_key' => $jobData['hook'] . ':' . uniqid(),
+                'job_data' => json_encode($jobData),
+                'error_message' => $errorMessage,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+            return true;
+        } catch (\Exception $e) {
+            $this->hooksManager->log('MySQL save failed job failed: ' . $e->getMessage(), 'ERROR');
+            return false;
         }
-
-        $failedJobData = [
-            'hook' => '{{hookName}}',
-            'params' => $params,
-            'error' => $errorMessage,
-            'timestamp' => time()
-        ];
-
-        $failedJobKey = "{{addonName}}:failed_jobs:{{hookName}}:" . uniqid();
-
-        $this->redisClient->set($failedJobKey, json_encode($failedJobData));
-        $this->redisClient->expire($failedJobKey, 86400); // Keep failed jobs for 24 hours
-        $this->hooksManager->log("Job moved to failed_jobs: {$failedJobKey}", 'ERROR');
     }
 }
