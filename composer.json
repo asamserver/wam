@@ -16,7 +16,6 @@
     },
     "autoload": {
         "psr-4": {
-            "WHMCS\\Module\\Addon\\kyc_verification\\app\\": "app/"
         }
     },
     "scripts": {

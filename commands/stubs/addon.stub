@@ -1,6 +1,5 @@
 <?php
 
-include __DIR__ . '/vendor/autoload.php';
 include __DIR__ . '/app/Helper/Helper.php';
 include __DIR__ . '/app/Application.php';
 include __DIR__ . '/app/Dispatcher/AdminDispatcher.php';
