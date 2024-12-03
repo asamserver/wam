@@ -1,6 +1,7 @@
 <?php
 
 namespace WHMCS\Module\Addon\$addonName\app;
+include __DIR__ . '/../vendor/autoload.php';
 
 class Router
 {
