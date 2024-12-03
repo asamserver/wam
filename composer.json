@@ -44,10 +44,10 @@
             "php-http/discovery": true
         }
     },
-     "repositories": [
+    "repositories": [
         {
-            "type": "path",
-            "url": "../addons/*",
+            "type": "vcs",
+            "url": "https://github.com/asamserver/wam",
             "options": {
                 "symlink": false
             }
