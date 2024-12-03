@@ -45,13 +45,6 @@
         }
     },
     "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/asamserver/wam",
-            "options": {
-                "symlink": false
-            }
-        }
     ],
     "minimum-stability": "dev",
     "prefer-stable": true
