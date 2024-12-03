@@ -21,27 +21,6 @@ class SetupCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
-
-        $envExamplePath = __DIR__ . '/../.env.example';
-        $envPath = __DIR__ . '/../.env';
-
-        if (!file_exists($envPath)) {
-            if (file_exists($envExamplePath)) {
-                if (copy($envExamplePath, $envPath)) {
-                    $output->writeln("<info>.env file has been successfully created from .env.example</info>");
-                } else {
-                    $output->writeln("<error>Failed to copy .env.example to .env. Please check file permissions.</error>");
-                    return Command::FAILURE;
-                }
-            } else {
-                $output->writeln("<error>.env.example file does not exist. Please create it before proceeding.</error>");
-                return Command::FAILURE;
-            }
-        } else {
-            $output->writeln("<info>.env file already exists. Skipping creation.</info>");
-        }
-
         $addonName = $input->getArgument('addonName');
         $currentDir = getcwd(); 
         $appDir = $currentDir . DIRECTORY_SEPARATOR . 'app';

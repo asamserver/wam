@@ -42,7 +42,11 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "config": {
+            "vendor-dir": "../../../../../vendor"
         }
+
     },
     "repositories": [
     ],

@@ -13,14 +13,12 @@ use Dotenv\Dotenv;
 require_once __DIR__ . '/commands/SetupCommand.php';
 require_once __DIR__ . '/commands/MigrationCommand.php';
 require_once __DIR__ . '/commands/ModelCommand.php';
-require_once __DIR__ . '/commands/MakeEnvCommand.php';
 require_once __DIR__ . '/commands/ControllerCommand.php';
 require_once __DIR__ . '/commands/MigrateCommand.php';
 require_once __DIR__ . '/commands/WebCommand.php';
 require_once __DIR__ . '/commands/HooksCommand.php';
 
 $app = new Application('WHMCS Addon Framework', '1.0.0');
-$app->add(new MakeEnvCommand()); 
 $app->add(new SetupCommand());
 $app->add(new MigrationCommand());
 $app->add(new ModelCommand()); 
