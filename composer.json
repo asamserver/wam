@@ -46,8 +46,11 @@
     },
     "repositories": [
         {
-            "type": "vcs",
-            "url": "https://github.com/asamserver/wam"
+            "type": "path",
+            "url": "../addons/*",
+            "options": {
+                "symlink": false
+            }
         }
     ],
     "minimum-stability": "dev",
