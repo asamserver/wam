@@ -1,23 +1,18 @@
 <?php
 namespace WHMCS\Module\Addon\$addonName\app;
 
-use Dotenv\Dotenv;
-$dotenv = Dotenv::createImmutable(__DIR__.'/../');
-$dotenv->load();
+
 class Application
 {
    
     public static function config(): array
     {
-
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-        $dotenv->load();
         return [
             'name' => '$addonName',
             'description' => 'Description for $addonName',
             'author' => 'Your Name',
             'version' => '1.0.0',
-            'enabled' => true,
+            'enabled' => false,
             'fields' => []
         ];
     }
