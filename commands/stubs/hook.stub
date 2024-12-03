@@ -23,6 +23,7 @@ class {{hookName}}Hook
 
         $jobData = [
             'hook' => '{{hookName}}',
+            'addonName'=>'{{addonName}}',
             'params' => json_encode($params),
             'created_at' => date('Y-m-d H:i:s'),
         ];
