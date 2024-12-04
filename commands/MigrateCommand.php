@@ -1,18 +1,13 @@
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
-if(getenv('APPENV') == 'production') {
-    require_once __DIR__ . '/../../../../init.php';
-}
 
 use Carbon\Carbon;
 use Illuminate\Database\Schema\Blueprint;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use WHMCS\Database\Capsule;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class MigrateCommand extends Command
 {
@@ -25,6 +20,7 @@ class MigrateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->setUpDatabaseConnection();
         $this->createMigrationHistoryTable();
         $output->writeln("<info>Running migrations...</info>");
         $migrationFiles = glob(__DIR__ . '/../database/*.php');
@@ -48,16 +44,16 @@ class MigrateCommand extends Command
             require_once $migrationFile; // Include the migration file
 
             $className = $this->getClassNameFromFile($migrationFile);
-
+            $output->writeln("<info>Class name: {$className}</info>");
             if (class_exists($className)) {
                 try {
                     $migrationInstance = new $className();
 
-                    // Run the 'up' method if it exists
                     if (method_exists($migrationInstance, 'up')) {
+                        $output->writeln("<info>Before running migration: {$className}</info>");
                         $migrationInstance->up();
-
-                        // Record the migration in history
+                        $output->writeln("<info>After running migration: {$className}</info>");
+                        
                         Capsule::table('tbl_migration_history')->insert([
                             'migration_name' => $migrationClass,
                             'applied_at' => Carbon::now(),
@@ -98,6 +94,38 @@ class MigrateCommand extends Command
             }
         } catch (\Exception $e) {
             echo "Exception caught: " . $e->getMessage() . "\n";
+        }
+    }
+
+    protected function setUpDatabaseConnection()
+    {
+        include(__DIR__ . '/../../../../configuration.php');
+        if (isset($db_host) && isset($db_username) && isset($db_password) && isset($db_name)) {
+            echo "Configuration variables loaded successfully.\n";
+        } else {
+            echo "Configuration variables not loaded.\n";
+        }
+
+        $capsule = new Capsule;
+        $capsule->addConnection([
+            'driver' => 'mysql',
+            'host' => $db_host,  // Access global variable from configuration.php
+            'port' => $db_port ?: '3306',  // Default to 3306 if no port is specified
+            'database' => $db_name,  // Access global variable from configuration.php
+            'username' => $db_username,  // Access global variable from configuration.php
+            'password' => $db_password,  // Access global variable from configuration.php
+            'charset' => $mysql_charset ?: 'utf8',  // Default to utf8 if no charset is specified
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+        ]);
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
+        $connection = $capsule->getConnection();
+        try {
+            $connection->getPdo();
+            echo "Database connection successful.\n";
+        } catch (\PDOException $e) {
+            echo "Database connection failed: " . $e->getMessage() . "\n";
         }
     }
 
