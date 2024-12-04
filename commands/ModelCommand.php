@@ -2,7 +2,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+use WHMCS\Database\Capsule;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,7 +25,7 @@ class ModelCommand extends Command
         $addonName  = basename(getcwd());
 
         $modelName = $input->getArgument('modelName');
-        $tableName = strtolower($modelName).'s'; 
+        $tableName = strtolower($modelName) . 's';
         $currentDir = getcwd();
         $modelDir = $currentDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Models';
 

@@ -7,7 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Illuminate\Database\Capsule\Manager as Capsule;
+use WHMCS\Database\Capsule;
 
 class MigrateCommand extends Command
 {
@@ -53,7 +53,7 @@ class MigrateCommand extends Command
                         $output->writeln("<info>Before running migration: {$className}</info>");
                         $migrationInstance->up();
                         $output->writeln("<info>After running migration: {$className}</info>");
-                        
+
                         Capsule::table('tbl_migration_history')->insert([
                             'migration_name' => $migrationClass,
                             'applied_at' => Carbon::now(),
@@ -140,7 +140,7 @@ class MigrateCommand extends Command
 
         // Convert the class name to CamelCase
         $className = str_replace('_', '', ucwords($classNameWithoutTimestamp, '_'));
-        $className=preg_replace('/^[0-9]+/', '', $className);
+        $className = preg_replace('/^[0-9]+/', '', $className);
         return $className;
     }
 }
