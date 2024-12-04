@@ -60,13 +60,11 @@ class MigrateCommand extends Command
                         ]);
 
                         $output->writeln("<info>Migration applied: {$className}</info>");
-                        logActivity("Migration applied successfully: {$className}");
                     } else {
                         $output->writeln("<error>Method 'up' not found in class: {$className}</error>");
                     }
                 } catch (\Exception $e) {
                     $output->writeln("<error>Error running migration {$className}: {$e->getMessage()}</error>");
-                    logActivity("Error applying migration: {$className}. Error: {$e->getMessage()}");
                 }
             } else {
                 $output->writeln("<error>Class not found: {$className}</error>");
@@ -109,12 +107,12 @@ class MigrateCommand extends Command
         $capsule = new Capsule;
         $capsule->addConnection([
             'driver' => 'mysql',
-            'host' => $db_host,  // Access global variable from configuration.php
-            'port' => $db_port ?: '3306',  // Default to 3306 if no port is specified
-            'database' => $db_name,  // Access global variable from configuration.php
-            'username' => $db_username,  // Access global variable from configuration.php
-            'password' => $db_password,  // Access global variable from configuration.php
-            'charset' => $mysql_charset ?: 'utf8',  // Default to utf8 if no charset is specified
+            'host' => $db_host,  
+            'port' => $db_port ?: '3306',
+            'database' => $db_name,
+            'username' => $db_username,  
+            'password' => $db_password,  
+            'charset' => $mysql_charset ?: 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
         ]);
