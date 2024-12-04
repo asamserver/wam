@@ -3,7 +3,7 @@
 namespace WHMCS\Module\Addon\{{addonName}}\app\Hooks;
 
 use WHMCS\Module\Addon\{{addonName}}\app\Hooks\HooksManager;
-use WHMCS\Database\Capsule;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class {{hookName}}Hook
 {

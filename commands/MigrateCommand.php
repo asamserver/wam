@@ -3,7 +3,7 @@
 require __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
-if(env('APP_ENV') == 'production') {
+if(getenv('APPENV') == 'production') {
     require_once __DIR__ . '/../../../../init.php';
 }
 

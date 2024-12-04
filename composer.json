@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": ">=8.0",
+        "illuminate/database": "^10.38",
         "illuminate/events": "^10.0",
         "illuminate/support": "^10.0",
         "jenssegers/blade": "^2.0",
