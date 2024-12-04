@@ -7,7 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use WHMCS\Database\Capsule;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class MigrateCommand extends Command
 {
