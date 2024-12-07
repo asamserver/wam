@@ -12,8 +12,6 @@ class {{className}} extends Migration
 {
     public function up()
     {
-
-
          try {
             Capsule::schema()->create('{{tableName}}', function (Blueprint $table) {
                 $table->increments('id');
