@@ -3,7 +3,7 @@
 require __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
-if(getenv('APPENV') == 'production') {
+if(env('APPENV') == 'production') {
     require_once __DIR__ . '/../../../../init.php';
 }
 use Carbon\Carbon;
@@ -24,7 +24,6 @@ class MigrateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->setUpDatabaseConnection();
         $this->createMigrationHistoryTable();
         $output->writeln("<info>Running migrations...</info>");
         $migrationFiles = glob(__DIR__ . '/../database/*.php');
@@ -99,38 +98,7 @@ class MigrateCommand extends Command
         }
     }
 
-    protected function setUpDatabaseConnection()
-    {
-        include(__DIR__ . '/../../../../configuration.php');
-        if (isset($db_host) && isset($db_username) && isset($db_password) && isset($db_name)) {
-            echo "Configuration variables loaded successfully.\n";
-        } else {
-            echo "Configuration variables not loaded.\n";
-        }
-
-        $capsule = new Capsule;
-        $capsule->addConnection([
-            'driver' => 'mysql',
-            'host' => $db_host,  
-            'port' => $db_port ?: '3306',
-            'database' => $db_name,
-            'username' => $db_username,  
-            'password' => $db_password,  
-            'charset' => $mysql_charset ?: 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix' => '',
-        ]);
-        $capsule->setAsGlobal();
-        $capsule->bootEloquent();
-        $connection = $capsule->getConnection();
-        try {
-            $connection->getPdo();
-            echo "Database connection successful.\n";
-        } catch (\PDOException $e) {
-            echo "Database connection failed: " . $e->getMessage() . "\n";
-        }
-    }
-
+   
 
     protected function getClassNameFromFile($file)
     {
