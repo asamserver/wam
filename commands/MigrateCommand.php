@@ -1,13 +1,17 @@
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
-
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+if(getenv('APPENV') == 'production') {
+    require_once __DIR__ . '/../../../../init.php';
+}
 use Carbon\Carbon;
 use Illuminate\Database\Schema\Blueprint;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Illuminate\Database\Capsule\Manager as Capsule;
+use WHMCS\Database\Capsule;
 
 class MigrateCommand extends Command
 {
