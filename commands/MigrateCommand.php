@@ -6,6 +6,7 @@ $dotenv->load();
 if(env('APPENV') == 'production') {
     require_once __DIR__ . '/../../../../init.php';
 }
+
 use Carbon\Carbon;
 use Illuminate\Database\Schema\Blueprint;
 use Symfony\Component\Console\Command\Command;
