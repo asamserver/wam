@@ -33,26 +33,20 @@ class WebCommand extends Command
         }
 
         $webFilePath = $webDir . DIRECTORY_SEPARATOR . 'web.php';
-        $stubPath = __DIR__ . '/stubs/web.stub';  // Path to the stub file
+        $stubPath = __DIR__ . '/stubs/web.stub'; 
 
         if (!file_exists($stubPath)) {
             $output->writeln("<error>web stub file not found: $stubPath</error>");
             return Command::FAILURE;
         }
-
         $stubContent = file_get_contents($stubPath);
-
-        // Replace placeholder with addon name
         $webStub = str_replace('{{addonName}}', $addonName, $stubContent);
-
-        // Write the web file
         if (file_put_contents($webFilePath, $webStub)) {
             $output->writeln("<info>Created web: $webFilePath</info>");
         } else {
             $output->writeln("<error>Failed to create web file. Please check permissions.</error>");
             return Command::FAILURE;
         }
-
         return Command::SUCCESS;
     }
 }

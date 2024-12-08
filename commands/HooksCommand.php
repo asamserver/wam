@@ -26,17 +26,13 @@ class HooksCommand extends Command
         $hookName = $input->getArgument('name');
         $useJob = $input->getOption('usejob') !== false;
 
-        // Ensure Hooks directory exists
         $hooksDir = getcwd() . '/app/Hooks';
         if (!is_dir($hooksDir)) {
             mkdir($hooksDir, 0777, true);
             $output->writeln("<info>Created Hooks directory: $hooksDir</info>");
         }
 
-        // Ensure HooksManager exists
         $this->ensureHooksManager($output, $addonName);
-
-        // Create Hook file
         $hookFilePath = $hooksDir . '/' . $hookName . 'Hook.php';
         $stubPath = __DIR__ . '/stubs/hook.stub';
 
@@ -102,22 +98,15 @@ class HooksCommand extends Command
                 $output->writeln("<error>Hooks registration stub not found!</error>");
                 return;
             }
-
-            // Create Hooks.php using the stub
             $hooksRegistrationStub = file_get_contents($hooksRegistrationStubPath);
             $hooksRegistrationStub = str_replace('{{addonName}}', $addonName, $hooksRegistrationStub);
-
             if (!file_put_contents($hooksRegistrationPath, $hooksRegistrationStub)) {
                 $output->writeln("<error>Failed to create Hooks.php. Check permissions.</error>");
                 return;
             }
             $output->writeln("<info>Created Hooks.php from stub: $hooksRegistrationPath</info>");
         }
-
-        // Read existing Hooks.php content
         $hooksContent = file_get_contents($hooksRegistrationPath);
-
-        // Prepare new hook registration logic
         $newHookUseStatement = "use WHMCS\\Module\\Addon\\{$addonName}\\app\\Hooks\\{$hookName}Hook;";
         $newHookRegistration = <<<EOL
         add_hook('{$hookName}', 1, function(\$params) {
@@ -125,8 +114,6 @@ class HooksCommand extends Command
             \$hookInstance->handle(\$params);
         });
 EOL;
-
-        // Add `use` statement if not already present
         if (strpos($hooksContent, $newHookUseStatement) === false) {
             $hooksContent = preg_replace(
                 '/(require_once __DIR__ . \'\/vendor\/autoload.php\';\n)/',
@@ -134,8 +121,6 @@ EOL;
                 $hooksContent
             );
         }
-
-        // Add hook registration logic if not already present
         if (strpos($hooksContent, $newHookRegistration) === false) {
             $hooksContent = preg_replace(
                 '/(\/\/ Register hooks here\n)/',
@@ -143,8 +128,6 @@ EOL;
                 $hooksContent
             );
         }
-
-        // Write back to Hooks.php
         if (file_put_contents($hooksRegistrationPath, $hooksContent)) {
             $output->writeln("<info>Updated Hooks.php with new hook: $hookName</info>");
         } else {

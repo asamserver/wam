@@ -103,13 +103,8 @@ class MigrateCommand extends Command
 
     protected function getClassNameFromFile($file)
     {
-        // Get the base filename without path or extension
         $fileName = basename($file, '.php');
-
-        // Remove the timestamp prefix (digits and underscores)
         $classNameWithoutTimestamp = preg_replace('/^\d+_/', '', $fileName);
-
-        // Convert the class name to CamelCase
         $className = str_replace('_', '', ucwords($classNameWithoutTimestamp, '_'));
         $className = preg_replace('/^[0-9]+/', '', $className);
         return $className;

@@ -33,7 +33,6 @@ class MigrationCommand extends Command
         $currentDir = getcwd();
         $databaseDir = $currentDir . DIRECTORY_SEPARATOR . 'database';
 
-        // Ensure the database directory exists
         if (!is_dir($databaseDir)) {
             if (!mkdir($databaseDir, 0777, true)) {
                 $output->writeln("<error>Failed to create database directory. Please check permissions.</error>");
@@ -41,30 +40,20 @@ class MigrationCommand extends Command
             }
             $output->writeln("<info>Created database directory: $databaseDir</info>");
         }
-
-        // Check if migration already exists
         if ($this->checkIfMigrationExists($tableName, $output)) {
             return Command::SUCCESS;
         }
-
-        // Prepare the migration file
         $timestamp = date('Y_m_d_His');
         $migrationFileName = "create_{$tableName}_table.php";
         $migrationFilePath = $databaseDir . DIRECTORY_SEPARATOR . $timestamp . '_' . $migrationFileName;
         $stubPath = __DIR__ . '/stubs/migration.stub';
-
-        // Ensure stub file exists
         if (!file_exists($stubPath)) {
             $output->writeln("<error>Migration stub file not found at: $stubPath</error>");
             return Command::FAILURE;
         }
-
-        // Read and replace placeholders in the stub
         $stub = file_get_contents($stubPath);
         $className = $this->getClassNameFromTableName($tableName);
         $stub = str_replace(['{{className}}', '{{tableName}}'], [$className, $tableName], $stub);
-
-        // Write the migration file
         if (file_put_contents($migrationFilePath, $stub)) {
             $output->writeln("<info>Created migration file: $migrationFilePath</info>");
         } else {
@@ -87,11 +76,6 @@ class MigrationCommand extends Command
         }
         return false;
     }
-
-    
-
-    
-    // Create a class name from the table name (e.g., mm_users -> CreateMmUsersTable)
     protected function getClassNameFromTableName($tableName)
     {
         $className = ucwords(str_replace('_', ' ', $tableName));
