@@ -37,13 +37,20 @@ class Router
     {
         $this->loadRoutes();
 
-        if (!isset($this->routes[$method][$uri])) {
-            return "Error: Route '$uri' not found for method '$method'.";
+        // Extract query parameters
+        $parsedUrl = parse_url($uri);
+        $path = $parsedUrl['path'] ?? $uri; // Get the path without query string
+        parse_str($parsedUrl['query'] ?? '', $queryParams); // Extract query parameters
+        $vars = array_merge($vars, $queryParams); // Merge with existing vars
+
+        if (!isset($this->routes[$method][$path])) {
+            return "Error: Route '$path' not found for method '$method'.";
         }
 
-        $route = $this->routes[$method][$uri];
+        $route = $this->routes[$method][$path];
         $controllerClass = $route['controller'];
         $actionMethod = $route['action'];
+
         if (class_exists($controllerClass)) {
             $controller = new $controllerClass();
             if (method_exists($controller, $actionMethod)) {
