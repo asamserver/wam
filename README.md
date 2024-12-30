@@ -45,6 +45,20 @@ DB_PREFIX=mod_youraddonname
 APPENV=local
 ```
 
+
+
+### Quick Installation
+
+1. Navigate to your WHMCS modules/addons directory:
+```bash
+cd modules/addons
+```
+
+2. Create a new addon using Composer:
+```bash
+composer create-project asamserver/wam your_addon_name dev-main
+```
+
 ## Command Line Interface
 
 The framework provides a CLI tool named `asam` for generating various components. Here are the available commands:
