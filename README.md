@@ -1,208 +1,268 @@
-# WHMCS Addon Module Framework (WAM)
+# WHMCS Addon Module Framework
 
-WAM is a powerful framework designed to simplify the creation and management of WHMCS addon modules. It provides a structured approach with modern PHP practices and helpful CLI commands.
+A Laravel-inspired framework for building WHMCS addon modules with modern PHP practices and a familiar structure. This framework provides a robust foundation for developing WHMCS addons with features like routing, MVC architecture, database migrations, and hooks management.
+
+## Features
+
+- MVC Architecture
+- Route Management
+- Database Migrations
+- Model Generation
+- Controller Generation
+- Hook System
+- CLI Commands
+- Admin & Client Area Support
+- Helper Functions
+- Resource Management (CSS, JS, Views)
 
 ## Installation
 
-To create a new WHMCS addon module, use Composer:
-
+1. Create a new directory for your addon in the WHMCS modules/addons directory:
 ```bash
-composer create-project asamserver/wam your-addon-name dev-main
+cd modules/addons
+mkdir your_addon_name
+cd your_addon_name
 ```
 
-This will create a new directory with your addon name and install all necessary dependencies.
+2. Clone this repository:
+```bash
+git clone https://github.com/yourusername/wam.git .
+```
+
+3. Install dependencies:
+```bash
+composer install
+```
+
+4. Set up your environment:
+```bash
+cp .env.example .env
+```
+
+5. Configure your .env file with appropriate database settings:
+```
+DB_PREFIX=mod_youraddonname
+APPENV=local
+```
+
+## Command Line Interface
+
+The framework provides a CLI tool named `asam` for generating various components. Here are the available commands:
+
+### Basic Commands
+
+```bash
+# Create a new addon
+php asam make:addon YourAddonName
+
+# Generate a controller
+php asam make:controller Admin/DashboardController
+
+# Create a model
+php asam make:model User
+
+# Generate a migration
+php asam make:migration users
+
+# Run migrations
+php asam migrate
+
+# Create a hook
+php asam make:hook ClientLogin
+
+# Generate web routes
+php asam make:web
+```
 
 ## Directory Structure
 
-After installation, your project will have the following structure:
-
 ```
-your-addon-name/
+your_addon_name/
 ├── app/
 │   ├── Controllers/
+│   ├── Models/
+│   ├── Hooks/
 │   ├── Dispatcher/
 │   ├── Helper/
-│   └── Models/
-├── commands/
+│   └── Application.php
 ├── database/
 ├── resource/
 │   ├── css/
 │   ├── js/
 │   └── views/
-└── routes/
+├── routes/
+│   └── web.php
+├── storage/
+│   └── logs/
+└── vendor/
 ```
 
-## Available Commands
+## Creating Controllers
 
-WAM comes with several CLI commands to help you build your addon module:
-
-### 1. Create Addon Module
+Controllers handle the business logic of your addon. To create a new controller:
 
 ```bash
-php whmcs make:addon YourAddonName
+php asam make:controller Admin/DashboardController
 ```
 
-This command will:
-- Create the main addon file
-- Set up the basic directory structure
-- Generate necessary dispatcher files
-- Create a base controller
-- Set up routing configuration
-
-**Output:**
-```
-Created app directory: /path/to/your/addon/app
-Created addon file: /path/to/your/addon/YourAddonName.php
-Created Application file: /path/to/your/addon/app/Application.php
-Created Helper directory: /path/to/your/addon/app/Helper
-Created helper file: /path/to/your/addon/app/Helper/Helper.php
-Created adminDispatcher directory: /path/to/your/addon/app/Dispatcher
-Created AdminDispatcher file: /path/to/your/addon/app/Dispatcher/AdminDispatcher.php
-Created AdminDispatcher file: /path/to/your/addon/app/Dispatcher/ClientDispatcher.php
-Created Router file: /path/to/your/addon/app/Router.php
-Created BaseController directory: /path/to/your/addon/app/Controllers
-Created BaseController file: /path/to/your/addon/app/Controllers/BaseController.php
-```
-
-### 2. Create Controller
-
-```bash
-php whmcs make:controller Admin/DashboardController
-```
-
-Creates a new controller with basic structure and routing.
-
-**Output:**
-```
-Created controller: /path/to/your/addon/app/Controllers/Admin/DashboardController.php
-```
-
-### 3. Create Model
-
-```bash
-php whmcs make:model User
-```
-
-Generates a new Eloquent model class.
-
-**Output:**
-```
-Created model: /path/to/your/addon/app/Models/User.php
-```
-
-### 4. Create Migration
-
-```bash
-php whmcs make:migration users
-```
-
-Creates a new database migration file.
-
-**Output:**
-```
-Created database directory: /path/to/your/addon/database
-Created migration file: /path/to/your/addon/database/YYYY_MM_DD_HHMMSS_create_users_table.php
-```
-
-### 5. Create Environment File
-
-```bash
-php whmcs make:env
-```
-
-Creates a .env file from .env.example if it doesn't exist.
-
-**Output:**
-```
-.env file successfully created from .env.example
-```
-
-## Configuration
-
-### Environment Variables
-
-The following environment variables can be configured in your `.env` file:
-
-```env
-MODULE=YourAddonName
-AUTHOR=Your Name
-VERSION=1.0.0
-APP_ENABLE=true
-DELETE_TABLES=false
-```
-
-### Routes
-
-Define your routes in `routes/web.php`:
+Example controller structure:
 
 ```php
-return [
-    // Admin routes
-    'admin/dashboard' => [
-        'controller' => DashboardController::class,
-        'action' => 'index',
-    ],
-    
-    // Client routes
-    'client/dashboard' => [
-        'controller' => ClientDashboardController::class,
-        'action' => 'index',
-    ],
-];
-```
+namespace WHMCS\Module\Addon\YourAddon\app\Controllers;
 
-## Views and Assets
-
-### Views
-
-Place your view files in `resource/views/`. The BaseController provides a `renderView` method:
-
-```php
-public function index()
+class DashboardController extends BaseController
 {
-    return $this->renderView('dashboard', [
+    public function index(array $vars)
+    {
+        return $this->renderView('admin.dashboard', [
+            'title' => 'Dashboard'
+        ]);
+    }
+}
+```
+
+## Defining Routes
+
+Routes are defined in the `routes/web.php` file:
+
+```php
+use WHMCS\Module\Addon\YourAddon\app\Controllers\Admin\DashboardController;
+
+$this->get('/admin/dashboard', DashboardController::class, 'index');
+$this->get('/client/dashboard', ClientDashboardController::class, 'index');
+```
+
+## Working with Models
+
+Create models to interact with your database:
+
+```bash
+php asam make:model User
+```
+
+Example model usage:
+
+```php
+namespace WHMCS\Module\Addon\YourAddon\app\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
+{
+    protected $fillable = ['name', 'email'];
+}
+```
+
+## Database Migrations
+
+Create and run database migrations:
+
+```bash
+# Create a migration
+php asam make:migration create_users_table
+
+# Run migrations
+php asam migrate
+```
+
+Example migration:
+
+```php
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateUsersTable extends Migration
+{
+    public function up()
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('email');
+            $table->timestamps();
+        });
+    }
+}
+```
+
+## Working with Hooks
+
+Create and manage WHMCS hooks:
+
+```bash
+php asam make:hook ClientLogin
+```
+
+Example hook:
+
+```php
+namespace WHMCS\Module\Addon\YourAddon\app\Hooks;
+
+class ClientLoginHook
+{
+    public function handle(array $params)
+    {
+        // Hook logic here
+    }
+}
+```
+
+## Views and Templates
+
+Views are stored in the `resource/views` directory. Render views from your controllers:
+
+```php
+public function index(array $vars)
+{
+    return $this->renderView('admin.dashboard', [
         'title' => 'Dashboard',
         'data' => $someData
     ]);
 }
 ```
 
-### CSS and JavaScript
-
-- CSS files go in `resource/css/`
-- JavaScript files go in `resource/js/`
-- Access them using `renderCss()` and `renderJs()` methods in BaseController
-
 ## Helper Functions
 
-The framework provides several helper functions in `app/Helper/Helper.php`:
+The framework provides various helper functions in `app/Helper/Helper.php`:
 
-- `generateRandomNumber()`: Generates a random number
-- `getClientId()`: Gets the current client ID
-- `getControllerClass()`: Gets the fully qualified controller class name
+```php
+// Get current client ID
+$clientId = YourAddon_getClientId();
+
+// Generate random number
+$random = YourAddon_generateRandomNumber();
+```
 
 ## Best Practices
 
-1. Always use the provided CLI commands to generate new files
-2. Follow PSR-4 autoloading standards
+1. Always use namespaces as defined in the framework
+2. Follow the MVC pattern
 3. Use migrations for database changes
-4. Keep controllers thin and move business logic to models
-5. Use environment variables for configuration
-6. Follow WHMCS security best practices
+4. Keep controllers thin and move business logic to services
+5. Use dependency injection where possible
+6. Log important events using the built-in logging system
 
-## Requirements
+## Error Handling
 
-- PHP >= 8.0
-- WHMCS installation
-- Composer
+The framework includes built-in error handling:
 
-## Dependencies
+```php
+try {
+    // Your code here
+} catch (\Exception $e) {
+    $this->hooksManager->log("Error: " . $e->getMessage(), 'ERROR');
+}
+```
 
-The framework includes:
-- illuminate/database
-- symfony/console
-- vlucas/phpdotenv
+## Contributing
+
+Please read CONTRIBUTING.md for details on our code of conduct and the process for submitting pull requests.
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the LICENSE.md file for details
+
+## Support
+
+For support, please open an issue in the GitHub repository or contact the maintainers.
+
